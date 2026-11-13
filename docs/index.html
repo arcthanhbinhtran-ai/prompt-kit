@@ -3,106 +3,155 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prompt Kit</title>
+<title>Prompt Kit — M5 STUDIO</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* Prompt Kit - bảng màu M5 STUDIO (đỏ / đen / trắng), giống arcthanhbinhtran-ai.github.io/m5studio */
 :root{
-  --bg:#f6f7f9; --panel:#fff; --line:#e3e6ea; --text:#15181d; --muted:#6b7280;
-  --accent:#2f6df6; --accent-soft:#e8f0ff; --danger:#c0392b; --ok:#1f8a4c;
-  --radius:10px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bg:#18181A; --panel:#262629; --head:#343438; --field:#101012; --line:#44444A; --line2:#2F2F33;
+  --text:#EEEEF0; --lbl:#C6C6CA; --muted:#84848A;
+  --accent:#D63A34; --accent-hover:#E8483F; --accent-soft:rgba(214,58,52,.16);
+  --danger:#EC7060; --ok:#4CC38A; --glow:rgba(214,58,52,.16); --headbg:rgba(16,16,18,.92);
+  --radius:14px; --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
 }
-:root:not([data-theme="light"]){
-  @media (prefers-color-scheme: dark){
-    --bg:#101317; --panel:#171b21; --line:#282e37; --text:#e8eaed; --muted:#9aa3af;
-    --accent:#6b9bff; --accent-soft:#1d2738; --danger:#e06c5c; --ok:#4cc08a;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#101317; --panel:#171b21; --line:#282e37; --text:#e8eaed; --muted:#9aa3af;
-  --accent:#6b9bff; --accent-soft:#1d2738; --danger:#e06c5c; --ok:#4cc08a;
+:root[data-theme="light"]{
+  --bg:#F4F4F5; --panel:#FFFFFF; --head:#ECECEE; --field:#FAFAFA; --line:#D6D6DA; --line2:#E4E4E7;
+  --text:#18181A; --lbl:#3A3A3F; --muted:#76767C;
+  --accent:#C8312B; --accent-hover:#D63A34; --accent-soft:rgba(214,58,52,.10);
+  --danger:#C8312B; --ok:#1F8A4C; --glow:rgba(214,58,52,.10); --headbg:rgba(255,255,255,.92);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
-  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel);
-  position:sticky;top:0;z-index:5}
-h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
-.repo{font:12px/1.4 var(--mono);color:var(--muted)}
-.spacer{flex:1}
+body{margin:0;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;
+  background-image:radial-gradient(ellipse 70% 360px at 50% -80px,var(--glow),transparent);background-repeat:no-repeat;
+  font:15px/1.55 "Be Vietnam Pro","Segoe UI",Arial,sans-serif}
 button,select,input,textarea{font:inherit;color:inherit}
-button{background:var(--panel);border:1px solid var(--line);border-radius:8px;
-  padding:7px 12px;cursor:pointer;white-space:nowrap}
-button:hover{border-color:var(--accent)}
+
+/* ---------- đầu trang ---------- */
+header{position:sticky;top:0;z-index:5;background:var(--headbg);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line2)}
+.hwrap{max-width:1280px;margin:0 auto;padding:0 20px;height:68px;display:flex;gap:10px;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
+.brand img{height:36px;width:auto}
+.brand span{font-size:18px}
+.brand b{color:var(--accent)}
+.repo{font:12px/1.4 var(--mono);color:var(--muted);padding:4px 10px;border:1px solid var(--line);
+  border-radius:999px;margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px}
+.spacer{flex:1}
+
+/* ---------- tiêu đề trang ---------- */
+.top{max-width:1280px;width:100%;margin:0 auto;padding:30px 20px 4px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.top h1{margin:6px 0 4px;font-size:30px;line-height:1.2;font-weight:800}
+.top h1 em{font-style:normal;color:var(--accent)}
+.top p{margin:0;color:var(--lbl);max-width:720px}
+
+/* ---------- nút ---------- */
+button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;
+  padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);
+  font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,transform .1s}
+button:hover{border-color:var(--muted)}
+button:active{transform:translateY(1px)}
 button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-button.primary:hover{filter:brightness(1.06)}
-button.ghost{border-color:transparent;color:var(--muted);padding:6px 8px}
+button.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+button.ghost{background:transparent;border-color:transparent;color:var(--lbl);font-weight:600}
+button.ghost:hover{background:var(--panel);color:var(--text)}
 button.danger{color:var(--danger)}
 button:disabled{opacity:.45;cursor:not-allowed}
-input,textarea,select{background:var(--bg);border:1px solid var(--line);
-  border-radius:8px;padding:8px 10px;width:100%}
-textarea{font:13px/1.55 var(--mono);resize:vertical}
-main{display:grid;grid-template-columns:minmax(300px,1fr) minmax(340px,1.15fr);
-  gap:16px;padding:16px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-  overflow:hidden}
-.panel>h2{margin:0;padding:11px 14px;font-size:13px;font-weight:650;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
-  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+header button{min-height:38px}
+
+/* ---------- ô nhập ---------- */
+input,textarea,select{background:var(--field);border:1px solid var(--line);border-radius:12px;
+  padding:10px 12px;width:100%;outline:none;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+select{padding:7px 10px;min-height:38px}
+textarea{font:13px/1.6 var(--mono);resize:vertical}
+
+/* ---------- hai khung ---------- */
+main{flex:1;display:grid;grid-template-columns:minmax(300px,1fr) minmax(340px,1.15fr);
+  gap:18px;padding:18px 20px 30px;align-items:start;max-width:1280px;width:100%;margin:0 auto}
+.panel{background:var(--panel);border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden}
+.panel>h2{margin:0;padding:14px 16px;font-size:15px;font-weight:800;color:var(--text);
+  border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:8px;background:var(--head)}
+.panel>h2::before{content:"";width:4px;height:18px;border-radius:2px;background:var(--accent);flex:none}
 .panel>h2 .spacer{flex:1}
-.body{padding:12px 14px}
-.toolbar{display:flex;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line)}
-ul{list-style:none;margin:0;padding:0}
-.item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);
-  align-items:flex-start;cursor:pointer}
-.item:last-child{border-bottom:0}
-.item:hover{background:var(--accent-soft)}
-.item input[type=checkbox]{width:16px;height:16px;margin-top:3px;flex:none;accent-color:var(--accent)}
-.item .t{font-weight:560}
-.item .d{font-size:13px;color:var(--muted)}
-.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
-.tag{font-size:11px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);
-  color:var(--accent)}
-.row{display:flex;gap:8px;align-items:center}
-.row+.row{margin-top:10px}
-label.f{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-.chip{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);
-  border-radius:8px;margin-bottom:8px;background:var(--bg)}
+.body{padding:14px 16px}
+.toolbar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line2)}
+ul{list-style:none;margin:0;padding:6px}
+.item{display:flex;gap:12px;padding:12px;border:1px solid transparent;border-radius:12px;
+  align-items:flex-start;cursor:pointer;transition:background .15s,border-color .15s}
+.item+.item{margin-top:4px}
+.item:hover{background:var(--accent-soft);border-color:var(--line)}
+.item input[type=checkbox]{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--accent)}
+.item .t{font-weight:700}
+.item .d{font-size:13.5px;color:var(--lbl);line-height:1.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--lbl)}
+.tag.sk{border-color:var(--accent);color:#fff;background:var(--accent-soft)}
+:root[data-theme="light"] .tag.sk{color:var(--accent)}
+.row{display:flex;gap:10px;align-items:center}
+.row+.row{margin-top:12px}
+label.f{display:block;font-size:12.5px;font-weight:600;color:var(--lbl);margin-bottom:5px}
+.chip{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border:1px solid var(--line);
+  border-left:3px solid var(--accent);border-radius:12px;margin-bottom:8px;background:var(--field)}
 .chip.drag{opacity:.4}
 .chip .h{cursor:grab;color:var(--muted);font:13px var(--mono)}
-.chip .n{flex:1;font-size:14px}
-pre{margin:0;padding:12px 14px;background:var(--bg);border-top:1px solid var(--line);
-  max-height:360px;overflow:auto;font:12.5px/1.6 var(--mono);white-space:pre-wrap;
-  word-break:break-word}
-.empty{padding:22px 14px;color:var(--muted);font-size:14px;text-align:center}
+.chip .n{flex:1;font-size:14px;font-weight:600}
+.chip button{min-height:30px;padding:0 10px}
+pre{margin:0;padding:14px 16px;background:var(--field);border-top:1px solid var(--line2);
+  max-height:380px;overflow:auto;font:12.5px/1.65 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--lbl)}
+.empty{padding:26px 14px;color:var(--muted);font-size:14px;text-align:center}
+.item .edit{min-height:32px;padding:0 10px}
+
+/* ---------- hộp thoại ---------- */
 dialog{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);
-  color:var(--text);padding:0;width:min(640px,94vw)}
-dialog::backdrop{background:rgba(0,0,0,.45)}
+  color:var(--text);padding:0;width:min(640px,94vw);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+dialog>h2{background:var(--head);border-bottom:1px solid var(--line2)!important;font-weight:800}
 dialog .body{max-height:70vh;overflow:auto}
-dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 14px;
-  border-top:1px solid var(--line)}
-.note{font-size:12.5px;color:var(--muted);margin-top:6px}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
-  background:var(--text);color:var(--bg);padding:9px 16px;border-radius:999px;
-  font-size:13.5px;z-index:50;opacity:0;pointer-events:none;transition:opacity .18s}
+dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line2)}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--accent);color:#fff;
+  padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:50;opacity:0;
+  pointer-events:none;transition:opacity .18s;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .toast.on{opacity:1}
 .count{font:12px var(--mono);color:var(--muted)}
+
+/* ---------- chân trang ---------- */
+.foot{border-top:1px solid var(--line2);color:var(--muted);font-size:13px}
+.foot div{max-width:1280px;margin:0 auto;padding:18px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.foot b{color:var(--text)} .foot b em{font-style:normal;color:var(--accent)}
+.foot a{color:var(--lbl);text-decoration:none} .foot a:hover{color:var(--accent)}
+
 @media (max-width:820px){
-  main{grid-template-columns:1fr;padding:12px;gap:12px}
-  header{padding:12px}
+  main{grid-template-columns:1fr;padding:12px 16px 24px;gap:14px}
+  .hwrap{padding:0 16px;height:auto;min-height:60px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .repo{display:none}
+  .top{padding:20px 16px 0}.top h1{font-size:24px}
+  header button{padding:0 10px}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Prompt Kit</h1>
+<header><div class="hwrap">
+  <div class="brand"><img src="m5-logo-sm.png" alt="M5 STUDIO"><span>PROMPT <b>KIT</b></span></div>
   <span class="repo" id="repoLabel">chưa cấu hình</span>
   <span class="spacer"></span>
-  <button id="btnNew">+ Prompt mới</button>
-  <button id="btnReload" class="ghost">Tải lại</button>
-  <button id="btnSettings" class="ghost">Cài đặt</button>
-  <button id="btnTheme" class="ghost">Nền tối / sáng</button>
-</header>
+  <button id="btnNew" class="primary" title="Viết một prompt mới và lưu thẳng vào GitHub (cần token trong Cài đặt)">+ Prompt mới</button>
+  <button id="btnReload" class="ghost" title="Đọc lại danh sách prompt từ GitHub">Tải lại</button>
+  <button id="btnSettings" class="ghost" title="Chọn repo và dán token GitHub">Cài đặt</button>
+  <button id="btnTheme" class="ghost" title="Đổi nền tối / sáng">◐</button>
+</div></header>
+
+<section class="top">
+  <div class="eyebrow">M5 STUDIO · Prompt Kit</div>
+  <h1>Kho prompt <em>dùng lại</em></h1>
+  <p>Bước 1: tích chọn prompt ở khung trái. Bước 2: điền chỗ trống ở khung phải. Bước 3: bấm <b>Sao chép prompt</b> rồi dán vào Claude.</p>
+</section>
 
 <main>
   <section class="panel">
@@ -173,6 +222,8 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 14px;
     <button class="primary" id="eSave">Lưu vào GitHub</button>
   </footer>
 </dialog>
+
+<footer class="foot"><div><b>M5 <em>STUDIO</em></b><span>Prompt Kit — quy trình làm việc đã chuẩn hoá, dùng lại trên mọi máy.</span><span class="spacer"></span><a href="https://arcthanhbinhtran-ai.github.io/m5studio/">Trang M5 STUDIO →</a></div></footer>
 
 <div class="toast" id="toast"></div>
 
@@ -289,7 +340,7 @@ function renderList(){
         <div class="t">${p.meta.title || p.file}</div>
         <div class="d">${p.meta.description || ''}</div>
         <div class="tags">${(p.meta.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}
-          ${p.meta.skill ? '<span class="tag">skill</span>' : ''}</div>
+          ${p.meta.skill ? '<span class="tag sk">skill</span>' : ''}</div>
       </div>
       <button class="ghost edit" title="Sửa">✎</button>
     </li>`).join('');
@@ -387,7 +438,7 @@ $('#btnDownload').onclick = () => {
 };
 $('#btnTheme').onclick = () => {
   const cur = document.documentElement.getAttribute('data-theme');
-  const next = cur === 'dark' ? 'light' : 'dark';
+  const next = cur === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
   try{ localStorage.setItem('promptkit.theme', next); }catch{}
 };
