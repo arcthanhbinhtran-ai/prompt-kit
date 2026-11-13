@@ -84,12 +84,25 @@ def main():
         os.makedirs(d, exist_ok=True)
         front = "---\nname: %s\ndescription: %s\n---\n\n" % (
             name, desc.replace("\n", " ").strip())
-        with open(os.path.join(d, "SKILL.md"), "w", encoding="utf-8") as f:
-            f.write(front + body.lstrip())
+        # Chỗ cần điền + lựa chọn quen dùng (khoá trùng tên biến trong frontmatter)
+        tail = ""
+        vs = sorted(set(re.findall(r"\{\{\s*([a-zA-Z0-9_]+)\s*\}\}", body)))
+        if vs:
+            lines = []
+            for v in vs:
+                opts = meta.get(v)
+                if isinstance(opts, list) and opts:
+                    lines.append("- `{{%s}}`: thường chọn một trong: %s" % (v, ", ".join(opts)))
+                else:
+                    lines.append("- `{{%s}}`" % v)
+            tail = ("\n## Chỗ cần hỏi người dùng\n\n"
+                    "Nếu người dùng chưa nói rõ, hỏi trước khi làm:\n\n" + "\n".join(lines) + "\n")
+        with open(os.path.join(d, "SKILL.md"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(front + body.strip() + "\n" + tail)
         made += 1
 
     os.makedirs(os.path.dirname(INDEX), exist_ok=True)
-    with open(INDEX, "w", encoding="utf-8") as f:
+    with open(INDEX, "w", encoding="utf-8", newline="\n") as f:
         json.dump({"prompts": index}, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
