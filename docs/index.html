@@ -32,7 +32,8 @@ button,select,input,textarea{font:inherit;color:inherit}
 /* ---------- đầu trang ---------- */
 header{position:sticky;top:0;z-index:5;background:var(--headbg);backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line2)}
-.hwrap{max-width:1280px;margin:0 auto;padding:0 20px;height:68px;display:flex;gap:10px;align-items:center}
+.hwrap{max-width:1280px;margin:0 auto;padding:10px 20px;min-height:68px;display:flex;gap:8px 10px;align-items:center;flex-wrap:wrap}
+@media (max-width:1150px){.repo{display:none}}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
 .brand img{height:36px;width:auto}
 .brand span{font-size:18px}
@@ -120,6 +121,23 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 .toast.on{opacity:1}
 .count{font:12px var(--mono);color:var(--muted)}
 
+/* ---------- hướng dẫn / tải lên ---------- */
+.steps{margin:0 0 12px;padding:0;list-style:none;counter-reset:b}
+.steps li{counter-increment:b;display:flex;gap:10px;margin-bottom:8px;color:var(--lbl);font-size:14px}
+.steps li::before{content:counter(b);flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);
+  color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.guide{font:12.5px/1.6 var(--mono);min-height:260px}
+.brand .owner,.owner{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:999px;
+  margin-left:6px;vertical-align:1px}
+.owner.yes{background:var(--accent);color:#fff}
+.owner.no{border:1px solid var(--line);color:var(--muted)}
+.lock{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--field);
+  color:var(--lbl);font-size:13px;margin-bottom:12px}
+.lock b{color:var(--text)}
+body.dropping::after{content:"Thả file .md vào đây để tải lên";position:fixed;inset:12px;z-index:60;
+  border:3px dashed var(--accent);border-radius:20px;background:rgba(16,16,18,.85);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800}
+
 /* ---------- chân trang ---------- */
 .foot{border-top:1px solid var(--line2);color:var(--muted);font-size:13px}
 .foot div{max-width:1280px;margin:0 auto;padding:18px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -141,7 +159,10 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
   <div class="brand"><img src="m5-logo-sm.png" alt="M5 STUDIO"><span>PROMPT <b>KIT</b></span></div>
   <span class="repo" id="repoLabel">chưa cấu hình</span>
   <span class="spacer"></span>
-  <button id="btnNew" class="primary" title="Viết một prompt mới và lưu thẳng vào GitHub (cần token trong Cài đặt)">+ Prompt mới</button>
+  <button id="btnGuide" title="Lấy đoạn lệnh dán vào một chat mới: AI ở đó sẽ tóm quy trình vừa làm thành file prompt">Tạo hướng dẫn</button>
+  <button id="btnUpload" title="Chọn file .md do AI tạo ra để thêm vào kho (hoặc kéo thả file vào trang)">Tải lên</button>
+  <button id="btnNew" class="primary" title="Tự viết một prompt mới">+ Prompt mới</button>
+  <input type="file" id="fileIn" accept=".md,.txt,text/markdown,text/plain" hidden>
   <button id="btnReload" class="ghost" title="Đọc lại danh sách prompt từ GitHub">Tải lại</button>
   <button id="btnSettings" class="ghost" title="Chọn repo và dán token GitHub">Cài đặt</button>
   <button id="btnTheme" class="ghost" title="Đổi nền tối / sáng">◐</button>
@@ -150,7 +171,7 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 <section class="top">
   <div class="eyebrow">M5 STUDIO · Prompt Kit</div>
   <h1>Kho prompt <em>dùng lại</em></h1>
-  <p>Bước 1: tích chọn prompt ở khung trái. Bước 2: điền chỗ trống ở khung phải. Bước 3: bấm <b>Sao chép prompt</b> rồi dán vào Claude.</p>
+  <p><b>Dùng prompt:</b> tích chọn ở khung trái → điền chỗ trống ở khung phải → <b>Sao chép prompt</b> rồi dán vào Claude.<br><b>Thêm prompt mới:</b> làm xong việc ở một chat → bấm <b>Tạo hướng dẫn</b>, dán vào chat đó → tải file .md AI trả về → bấm <b>Tải lên</b>.</p>
 </section>
 
 <main>
@@ -205,6 +226,7 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 <dialog id="dlgEdit">
   <h2 style="margin:0;padding:13px 14px;border-bottom:1px solid var(--line);font-size:15px" id="eTitle">Prompt mới</h2>
   <div class="body">
+    <div class="lock" id="eLock"></div>
     <div class="row"><div style="flex:1"><label class="f">Tên file (không dấu, nối bằng -)</label>
       <input id="eFile" placeholder="vd: dat-ten-ban-ve"></div></div>
     <div class="row"><div style="flex:1"><label class="f">Tiêu đề</label><input id="eTitleIn"></div></div>
@@ -224,6 +246,46 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 </dialog>
 
 <footer class="foot"><div><b>M5 <em>STUDIO</em></b><span>Prompt Kit — quy trình làm việc đã chuẩn hoá, dùng lại trên mọi máy.</span><span class="spacer"></span><a href="https://arcthanhbinhtran-ai.github.io/m5studio/">Trang M5 STUDIO →</a></div></footer>
+
+<dialog id="dlgGuide">
+  <h2 style="margin:0;padding:13px 16px;font-size:15px">Tạo hướng dẫn từ một cuộc trò chuyện</h2>
+  <div class="body">
+    <ol class="steps">
+      <li><span>Làm xong một việc hay trong một chat với Claude (hoặc AI khác).</span></li>
+      <li><span>Bấm <b>Sao chép</b> bên dưới, dán vào chính chat đó, gửi đi.</span></li>
+      <li><span>AI trả về một file <b>.md</b> — tải file đó về máy.</span></li>
+      <li><span>Quay lại đây bấm <b>Tải lên</b> (hoặc kéo thả file vào trang), xem lại rồi lưu.</span></li>
+    </ol>
+    <label class="f">Đoạn lệnh dán vào chat (sửa thêm được nếu muốn)</label>
+    <textarea id="guideText" class="guide" rows="14">Hãy tổng hợp quy trình chúng ta vừa làm trong cuộc trò chuyện này thành MỘT file prompt, để tôi lưu vào kho Prompt Kit và dùng lại cho lần sau.
+
+Yêu cầu:
+1. Tên file: không dấu, chữ thường, nối bằng dấu gạch ngang, đuôi .md (ví dụ: dat-ten-ban-ve.md).
+2. Đầu file là phần khai báo đúng mẫu dưới đây, giữ nguyên dòng --- ở đầu và cuối:
+---
+title: Tên ngắn gọn, tiếng Việt có dấu
+description: Một câu nói rõ KHI NÀO thì dùng prompt này
+tags: [tu-khoa-1, tu-khoa-2]
+skill: true
+---
+3. Phần thân viết bằng Markdown, đủ để một AI khác làm lại được từ đầu mà không cần đọc cuộc trò chuyện này:
+   - Mục tiêu và kết quả cần ra
+   - Đầu vào cần chuẩn bị
+   - Các bước làm, theo thứ tự
+   - Quy tắc, quy ước đã thống nhất (cách đặt tên, định dạng, bảng tra...)
+   - Lỗi đã gặp và cách tránh
+   - Cách kiểm tra kết quả
+4. Chỗ nào mỗi lần dùng sẽ khác (tên dự án, đường dẫn, số liệu...) thì viết dạng {{ten_bien}} (không dấu, nối bằng gạch dưới).
+5. Không đưa vào: mật khẩu, token, email, số điện thoại, thông tin riêng của khách hàng.
+
+Xuất kết quả thành file .md để tôi tải về. Nếu không tạo được file thì in toàn bộ nội dung trong MỘT khối code duy nhất để tôi sao chép.</textarea>
+  </div>
+  <footer>
+    <span class="spacer" style="flex:1"></span>
+    <button onclick="dlgGuide.close()">Đóng</button>
+    <button class="primary" id="guideCopy">Sao chép</button>
+  </footer>
+</dialog>
 
 <div class="toast" id="toast"></div>
 
@@ -470,6 +532,14 @@ function loadCfg(){
     if(seg.length) cfg.repo = seg[0];
   }
   $('#repoLabel').textContent = cfg.owner ? `${cfg.owner}/${cfg.repo}@${cfg.branch||'main'}` : 'chưa cấu hình';
+  showOwner();
+}
+function showOwner(){
+  let o = $('#ownerTag');
+  if(!o){ o = document.createElement('span'); o.id='ownerTag'; $('.brand').appendChild(o); }
+  o.className = 'owner ' + (cfg.token ? 'yes' : 'no');
+  o.textContent = cfg.token ? 'CHỦ KHO' : 'CHỈ XEM';
+  o.title = cfg.token ? 'Trình duyệt này có token: thêm / sửa / xoá được.' : 'Chưa có token: chỉ xem và dùng prompt. Chủ kho vào Cài đặt dán token.';
 }
 $('#btnSettings').onclick = () => {
   sOwner.value=cfg.owner; sRepo.value=cfg.repo; sBranch.value=cfg.branch||'main';
@@ -482,12 +552,12 @@ $('#sSave').onclick = () => {
          token:sToken.value.trim()};
   try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch{}
   $('#repoLabel').textContent = `${cfg.owner}/${cfg.repo}@${cfg.branch}`;
-  dlgSettings.close(); loadAll();
+  showOwner(); dlgSettings.close(); loadAll();
 };
 $('#sForget').onclick = () => {
   cfg.token=''; sToken.value='';
   try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch{}
-  toast('Đã xoá token khỏi trình duyệt này.');
+  showOwner(); toast('Đã xoá token khỏi trình duyệt này.');
 };
 
 /* ---------- thêm / sửa / xoá prompt ---------- */
@@ -501,7 +571,11 @@ function openEdit(file){
   eTags.value = (editing?.meta.tags || []).join(', ');
   eSkill.checked = editing ? !!editing.meta.skill : true;
   eBody.value = editing?.body.trim() || '';
-  eDelete.style.display = editing ? '' : 'none';
+  eDelete.style.display = (editing && cfg.token) ? '' : 'none';
+  eSave.textContent = cfg.token ? 'Lưu vào GitHub' : 'Tải file .md về';
+  eLock.innerHTML = cfg.token
+    ? '<b>Chế độ chủ kho.</b> Bấm lưu là prompt lên GitHub ngay, khoảng 1 phút sau thành skill cho Claude.'
+    : '<b>Chỉ chủ kho mới lưu thẳng vào kho được.</b> Bạn vẫn soạn được: bấm <b>Tải file .md về</b> rồi gửi file cho chủ kho. Chủ kho thì vào <b>Cài đặt</b> dán token.';
   dlgEdit.showModal();
 }
 $('#btnNew').onclick = () => openEdit(null);
@@ -517,6 +591,14 @@ $('#eSave').onclick = async () => {
     'tags: [' + tags.join(', ') + ']\n' +
     'skill: ' + (eSkill.checked ? 'true' : 'false') + '\n' +
     '---\n\n' + eBody.value.trim() + '\n';
+  if(!cfg.token){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type:'text/markdown'}));
+    a.download = slug + '.md'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    dlgEdit.close(); return toast('Đã tải ' + slug + '.md — gửi file này cho chủ kho.', 3500);
+  }
+  if(!editing && prompts.some(p => p.file === slug + '.md'))
+    return toast('Đã có prompt tên ' + slug + '.md — đổi tên file khác, hoặc bấm ✎ ở prompt đó để sửa.', 4000);
   try{
     await putFile(`${cfg.dir}/${slug}.md`, text, editing?.sha,
       (editing ? 'docs: cap nhat prompt ' : 'docs: them prompt ') + slug);
@@ -534,6 +616,65 @@ $('#eDelete').onclick = async () => {
     dlgEdit.close(); toast('Đã xoá.'); loadAll();
   }catch(e){ toast(e.message); }
 };
+
+/* ---------- tạo hướng dẫn ---------- */
+$('#btnGuide').onclick = () => dlgGuide.showModal();
+$('#guideCopy').onclick = async () => {
+  try{ await navigator.clipboard.writeText(guideText.value); }
+  catch{ guideText.select(); document.execCommand('copy'); }
+  toast('Đã sao chép. Dán vào chat vừa làm việc rồi gửi đi.', 3000);
+};
+
+/* ---------- tải lên file .md ---------- */
+function slugOf(name){
+  return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d')
+    .replace(/\.(md|txt)$/,'').replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'');
+}
+function fillFromText(text, fileName){
+  text = text.replace(/\r\n/g,'\n').replace(/^﻿/,'').trim();
+  const fence = text.match(/^```[a-z]*\n([\s\S]*?)\n```$/);   // AI lỡ bọc trong khối code
+  if(fence) text = fence[1].trim();
+  const [meta, body] = parseFM(text + '\n');
+  if(fileName && !eFile.disabled) eFile.value = slugOf(fileName);
+  if(!eFile.value && meta.title) eFile.value = slugOf(meta.title);
+  if(meta.title) eTitleIn.value = meta.title;
+  if(meta.description) eDesc.value = meta.description;
+  if(meta.tags) eTags.value = [].concat(meta.tags).join(', ');
+  if(meta.skill !== undefined) eSkill.checked = !!meta.skill;
+  eBody.value = (meta.title ? body : text).trim();
+  return !!meta.title;
+}
+function uploadText(text, fileName){
+  openEdit(null);
+  const ok = fillFromText(text, fileName);
+  $('#eTitle').textContent = 'Tải lên: ' + (fileName || 'nội dung dán');
+  toast(ok ? 'Đã đọc file. Xem lại rồi bấm lưu.' : 'File thiếu phần khai báo đầu file — điền Tiêu đề và Mô tả giúp.', 3500);
+}
+function readFile(f){
+  if(!f) return;
+  if(!/\.(md|txt)$/i.test(f.name)) return toast('Chỉ nhận file .md hoặc .txt.');
+  if(f.size > 300000) return toast('File quá lớn (trên 300 KB).');
+  const r = new FileReader();
+  r.onload = () => uploadText(r.result, f.name);
+  r.readAsText(f, 'utf-8');
+}
+$('#btnUpload').onclick = () => { fileIn.value=''; fileIn.click(); };
+fileIn.onchange = () => readFile(fileIn.files[0]);
+// kéo thả file vào trang
+let dragN = 0;
+addEventListener('dragenter', e => { if([...e.dataTransfer.types].includes('Files')){ dragN++; document.body.classList.add('dropping'); } });
+addEventListener('dragleave', () => { if(--dragN <= 0){ dragN=0; document.body.classList.remove('dropping'); } });
+addEventListener('dragover', e => { if([...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
+addEventListener('drop', e => {
+  if(!e.dataTransfer.files.length) return;
+  e.preventDefault(); dragN=0; document.body.classList.remove('dropping');
+  readFile(e.dataTransfer.files[0]);
+});
+// dán nguyên file (có phần --- đầu file) vào ô nội dung thì tự tách ra các ô
+eBody.addEventListener('paste', e => {
+  const t = (e.clipboardData || window.clipboardData).getData('text');
+  if(/^\s*(```[a-z]*\n)?---\s*\n[\s\S]*?\ntitle\s*:/.test(t)){ e.preventDefault(); fillFromText(t, null); toast('Đã tự tách tiêu đề, mô tả, thẻ.'); }
+});
 
 /* ---------- khởi động ---------- */
 try{
