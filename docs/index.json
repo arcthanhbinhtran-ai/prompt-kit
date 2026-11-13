@@ -37,6 +37,48 @@
       ],
       "skill": true,
       "variables": []
+    },
+    {
+      "file": "thu-nghiem-vat-lieu-va-pattern-mat-dung.md",
+      "name": "thu-nghiem-vat-lieu-va-pattern-mat-dung",
+      "title": "Thử nghiệm vật liệu và pattern mặt đứng",
+      "description": "Dùng khi cần chuyển ảnh mô hình kiến trúc thành phối cảnh thực tế và thử nhiều vật liệu, màu sắc hoặc quy luật lam ốp trên cùng một công trình.",
+      "tags": [
+        "mat-dung",
+        "phoi-canh",
+        "vat-lieu",
+        "pattern",
+        "lam-che-nang"
+      ],
+      "skill": true,
+      "variables": [
+        "ten_du_an",
+        "ma_du_an",
+        "che_do",
+        "anh_goc",
+        "anh_danh_dau",
+        "bang_ma_mau",
+        "danh_sach_anh_mau",
+        "vai_tro_tung_anh_mau",
+        "dac_diem_kien_truc",
+        "pham_vi_op",
+        "boi_canh",
+        "vat_lieu",
+        "mau_vat_lieu",
+        "kieu_pattern",
+        "khung_do",
+        "cay_xanh",
+        "goc_nhin",
+        "so_phuong_an",
+        "dang_dau_ra",
+        "ty_le_anh",
+        "do_phan_giai_mong_muon",
+        "thu_muc_xuat",
+        "anh_moc_da_chon",
+        "yeu_cau_chinh_sua",
+        "dieu_chinh_kich_thuoc_mat_do",
+        "do_thoang_muc_tieu"
+      ]
     }
   ]
 }
