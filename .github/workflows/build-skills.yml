@@ -1,0 +1,32 @@
+name: Build skills
+
+on:
+  push:
+    paths:
+      - "prompts/**"
+      - "scripts/build_skills.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sinh skill tu prompts/
+        run: python3 scripts/build_skills.py
+
+      - name: Commit neu co thay doi
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plugins/prompt-kit/skills docs/index.json
+          if git diff --cached --quiet; then
+            echo "Khong co thay doi."
+          else
+            git commit -m "chore: rebuild skills tu prompts/"
+            git push
+          fi
