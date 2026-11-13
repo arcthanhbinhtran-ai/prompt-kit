@@ -1,0 +1,8 @@
+{
+  "name": "prompt-kit",
+  "description": "Kho prompt ca nhan duoc sinh tu thu muc prompts/. Moi file prompt co skill: true se thanh mot skill.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Tran Thanh Binh"
+  }
+}

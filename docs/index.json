@@ -1,0 +1,17 @@
+{
+  "prompts": [
+    {
+      "file": "pdf-bookmark.md",
+      "name": "pdf-bookmark",
+      "title": "Tạo bookmark cho hồ sơ bản vẽ PDF",
+      "description": "Dùng khi cần tạo, đặt lại hoặc đổi tên bookmark cho file PDF hồ sơ bản vẽ nhiều trang (kiến trúc, cảnh quan, MEP, hạ tầng).",
+      "tags": [
+        "pdf",
+        "ban-ve",
+        "bookmark"
+      ],
+      "skill": true,
+      "variables": []
+    }
+  ]
+}

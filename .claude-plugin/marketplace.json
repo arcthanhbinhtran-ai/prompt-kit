@@ -1,0 +1,13 @@
+{
+  "name": "prompt-kit",
+  "owner": {
+    "name": "Tran Thanh Binh"
+  },
+  "plugins": [
+    {
+      "source": "./plugins/prompt-kit",
+      "name": "prompt-kit",
+      "description": "Kho prompt ca nhan: cac quy trinh lam viec da chuan hoa, dung lai tren moi may."
+    }
+  ]
+}
