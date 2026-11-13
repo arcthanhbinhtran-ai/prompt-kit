@@ -145,6 +145,23 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 .ck[aria-pressed="true"]{border-color:var(--accent);color:var(--text)}
 .ck:hover{border-color:var(--muted)}
 .copy-big{flex:1;min-height:46px;font-size:15px}
+.grp{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);margin:22px 0 12px;padding-top:14px;border-top:1px solid var(--line2)}
+.grp:first-child{margin-top:0;padding-top:0;border-top:0}
+.ck.one i{border-radius:50%}
+#vars textarea{font:inherit;font-size:14px;min-height:64px}
+.item.bad{border-color:var(--danger);cursor:default}
+.item.bad .t{color:var(--danger)}
+.tag.err{border-color:var(--danger);color:#fff;background:var(--danger)}
+.errs{margin:8px 0 0;padding:8px 10px 8px 26px;border-radius:10px;background:rgba(236,112,96,.12);
+  color:var(--danger);font-size:12.5px;line-height:1.5}
+.errs li{list-style:disc}
+.item .del{min-height:32px;padding:0 12px;color:var(--danger);border-color:var(--danger);background:transparent}
+.check{border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;border:1px solid var(--line)}
+.check.ok{border-color:var(--ok);color:var(--ok)}
+.check.bad{border-color:var(--danger);background:rgba(236,112,96,.10);color:var(--danger)}
+.check ul{margin:6px 0 0;padding-left:20px}
+.check .w{color:var(--muted)}
 
 /* ---------- hướng dẫn / tải lên ---------- */
 .steps{margin:0 0 12px;padding:0;list-style:none;counter-reset:b}
@@ -159,12 +176,14 @@ dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;bo
 .lock{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--field);
   color:var(--lbl);font-size:13px;margin-bottom:12px}
 .lock b{color:var(--text)}
-body.dropping::after{content:"Thả file .md vào đây để tải lên";position:fixed;inset:12px;z-index:60;
+body.dropping::after{content:attr(data-drop);position:fixed;inset:12px;z-index:60;
   border:3px dashed var(--accent);border-radius:20px;background:rgba(16,16,18,.85);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800}
 
 /* ---------- chân trang ---------- */
 .foot{border-top:1px solid var(--line2);color:var(--muted);font-size:13px}
+#btnLang{min-width:46px;padding:0 10px;border:1px solid var(--line);font-weight:800;letter-spacing:.5px}
+#btnLang:hover{border-color:var(--accent);color:var(--text)}
 .foot div{max-width:1280px;margin:0 auto;padding:18px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .foot b{color:var(--text)} .foot b em{font-style:normal;color:var(--accent)}
 .foot a{color:var(--lbl);text-decoration:none} .foot a:hover{color:var(--accent)}
@@ -179,25 +198,25 @@ body.dropping::after{content:"Thả file .md vào đây để tải lên";positi
 }
 </style>
 </head>
-<body>
+<body data-drop="Thả file .md vào đây để tải lên">
 
 <header><div class="hwrap">
   <div class="brand"><img src="m5-logo-sm.png" alt="M5 STUDIO"><span>PROMPT <b>KIT</b></span></div>
   <span class="repo" id="repoLabel">chưa cấu hình</span>
   <span class="spacer"></span>
-  <button id="btnGuide" title="Lấy đoạn lệnh dán vào một chat mới: AI ở đó sẽ tóm quy trình vừa làm thành file prompt">Tạo hướng dẫn</button>
-  <button id="btnUpload" title="Chọn file .md do AI tạo ra để thêm vào kho (hoặc kéo thả file vào trang)">Tải lên</button>
-  <button id="btnNew" class="primary" title="Tự viết một prompt mới">+ Prompt mới</button>
+  <button id="btnUpload" title="Chọn file .md do chatbot xuất ra để thêm vào kho (hoặc kéo thả file vào trang)">Tải lên</button>
+  <button id="btnNew" class="primary" title="Lấy đoạn hướng dẫn dán vào chatbot: nó tóm cuộc trò chuyện thành file prompt đúng khung M5 Prompt Kit">+ Prompt mới</button>
   <input type="file" id="fileIn" accept=".md,.txt,text/markdown,text/plain" hidden>
   <button id="btnReload" class="ghost" title="Đọc lại danh sách prompt từ GitHub">Tải lại</button>
   <button id="btnSettings" class="ghost" title="Chọn repo và dán token GitHub">Cài đặt</button>
+  <button id="btnLang" class="ghost" title="English">EN</button>
   <button id="btnTheme" class="ghost" title="Đổi nền tối / sáng">◐</button>
 </div></header>
 
 <section class="top">
   <div class="eyebrow">M5 STUDIO · Prompt Kit</div>
   <h1>Kho prompt <em>dùng lại</em></h1>
-  <p><b>Dùng prompt:</b> tích chọn prompt → tích hoặc gõ chỗ trống → chọn cách AI làm việc → <b>Copy prompt</b> rồi dán vào Claude.<br><b>Thêm prompt mới:</b> làm xong việc ở một chat → bấm <b>Tạo hướng dẫn</b>, dán vào chat đó → tải file .md AI trả về → bấm <b>Tải lên</b>.</p>
+  <p data-en="<b>Use a prompt:</b> tick prompts → tick or type the blanks → choose how the AI should work → <b>Copy prompt</b> and paste it into Claude.<br><b>Add a new prompt:</b> finish a task in a chat → click <b>+ New prompt</b>, copy the instruction into that chat → download the .md file the chatbot exports → click <b>Upload</b>. Files that break the format are rejected with a list of errors."><b>Dùng prompt:</b> tích chọn prompt → tích hoặc gõ chỗ trống → chọn cách AI làm việc → <b>Copy prompt</b> rồi dán vào Claude.<br><b>Thêm prompt mới:</b> làm xong việc ở một chat → bấm <b>+ Prompt mới</b>, sao chép đoạn hướng dẫn dán vào chat đó → tải file .md chatbot xuất ra → bấm <b>Tải lên</b>. File sai khung sẽ bị báo lỗi, không lưu.</p>
 </section>
 
 <main>
@@ -255,7 +274,7 @@ body.dropping::after{content:"Thả file .md vào đây để tải lên";positi
     <div style="flex:1"><label class="f">Thư mục prompt</label><input id="sDir" placeholder="prompts"></div></div>
     <div class="row"><div style="flex:1"><label class="f">GitHub token (tuỳ chọn — cần khi muốn thêm/xoá/lưu bộ, hoặc repo private)</label>
       <input id="sToken" type="password" placeholder="github_pat_…"></div></div>
-    <p class="note">Token chỉ lưu trong trình duyệt này (localStorage), không gửi đi đâu ngoài api.github.com.
+    <p class="note" data-en="The token is stored only in this browser (localStorage) and is sent nowhere except api.github.com. Use a fine-grained token with only <b>Contents: Read and write</b> on this repo.">Token chỉ lưu trong trình duyệt này (localStorage), không gửi đi đâu ngoài api.github.com.
       Nên dùng fine-grained token, chỉ cấp quyền <b>Contents: Read and write</b> cho đúng repo này.</p>
   </div>
   <footer>
@@ -270,6 +289,7 @@ body.dropping::after{content:"Thả file .md vào đây để tải lên";positi
   <h2 style="margin:0;padding:13px 14px;border-bottom:1px solid var(--line);font-size:15px" id="eTitle">Prompt mới</h2>
   <div class="body">
     <div class="lock" id="eLock"></div>
+    <div class="check" id="eCheck" hidden></div>
     <div class="row"><div style="flex:1"><label class="f">Tên file (không dấu, nối bằng -)</label>
       <input id="eFile" placeholder="vd: dat-ten-ban-ve"></div></div>
     <div class="row"><div style="flex:1"><label class="f">Tiêu đề</label><input id="eTitleIn"></div></div>
@@ -277,9 +297,9 @@ body.dropping::after{content:"Thả file .md vào đây để tải lên";positi
     <div class="row"><div style="flex:1"><label class="f">Thẻ, cách nhau bằng dấu phẩy</label><input id="eTags"></div>
       <label style="display:flex;gap:6px;align-items:center;white-space:nowrap;margin-top:18px">
         <input type="checkbox" id="eSkill" checked style="width:16px"> Thành skill</label></div>
-    <div class="row"><div style="flex:1"><label class="f">Nội dung prompt (dùng <code>{{bien}}</code> cho chỗ cần điền)</label>
+    <div class="row"><div style="flex:1"><label class="f" data-en="Prompt content (use <code>{{name}}</code> for blanks and <code>{{bang_tich}}</code> for the ticked list)">Nội dung prompt (dùng <code>{{bien}}</code> cho chỗ cần điền)</label>
       <textarea id="eBody" rows="12"></textarea></div></div>
-    <div class="row"><div style="flex:1"><label class="f">Ô tích cho chỗ cần điền — mỗi dòng một chỗ, dạng <code>ten_bien: [Lựa chọn 1, Lựa chọn 2]</code> (bỏ trống được)</label>
+    <div class="row"><div style="flex:1"><label class="f" data-en="Extra tick options in the header — one per line, as <code>name: [Option 1, Option 2]</code> (optional; prefer the bang-tich block)">Ô tích cho chỗ cần điền — mỗi dòng một chỗ, dạng <code>ten_bien: [Lựa chọn 1, Lựa chọn 2]</code> (bỏ trống được)</label>
       <textarea id="eOpts" rows="3" placeholder="phong_cach: [Hiện đại, Tối giản, Nhiệt đới]"></textarea></div></div>
   </div>
   <footer>
@@ -293,43 +313,75 @@ body.dropping::after{content:"Thả file .md vào đây để tải lên";positi
 <footer class="foot"><div><b>M5 <em>STUDIO</em></b><span>Prompt Kit — quy trình làm việc đã chuẩn hoá, dùng lại trên mọi máy.</span><span class="spacer"></span><a href="https://arcthanhbinhtran-ai.github.io/m5studio/">Trang M5 STUDIO →</a></div></footer>
 
 <dialog id="dlgGuide">
-  <h2 style="margin:0;padding:13px 16px;font-size:15px">Tạo hướng dẫn từ một cuộc trò chuyện</h2>
+  <h2 style="margin:0;padding:13px 16px;font-size:15px">Prompt mới — nhờ chatbot tóm cuộc trò chuyện</h2>
   <div class="body">
-    <ol class="steps">
-      <li><span>Làm xong một việc hay trong một chat với Claude (hoặc AI khác).</span></li>
-      <li><span>Bấm <b>Sao chép</b> bên dưới, dán vào chính chat đó, gửi đi.</span></li>
-      <li><span>AI trả về một file <b>.md</b> — tải file đó về máy.</span></li>
-      <li><span>Quay lại đây bấm <b>Tải lên</b> (hoặc kéo thả file vào trang), xem lại rồi lưu.</span></li>
+    <ol class="steps" data-en="<li><span>Finish a useful task in a chat with Claude (or another chatbot).</span></li><li><span>Click <b>Copy</b> below, paste it into that same chat and send. The chatbot summarises, keeps only the final decisions and fills in the M5 Prompt Kit template.</span></li><li><span>The chatbot exports a <b>.md</b> file — download it.</span></li><li><span>Click <b>Upload file</b> (or drag it onto the page). The page checks it: correct files can be saved, wrong ones show each problem so you can ask the chatbot to fix it.</span></li>">
+      <li><span>Làm xong một việc hay trong một chat với Claude (hoặc chatbot khác).</span></li>
+      <li><span>Bấm <b>Sao chép</b> bên dưới, dán vào chính chat đó, gửi đi. Chatbot sẽ tóm tắt, lọc ra phần cuối cùng đã chốt và điền đúng khung M5 Prompt Kit.</span></li>
+      <li><span>Chatbot xuất một file <b>.md</b> — tải file đó về máy.</span></li>
+      <li><span>Bấm <b>Tải file lên</b> (hoặc kéo thả file vào trang). Trang tự soát: đúng khung mới cho lưu, sai thì báo từng chỗ để anh nhờ chatbot sửa.</span></li>
     </ol>
     <label class="f">Đoạn lệnh dán vào chat (sửa thêm được nếu muốn)</label>
-    <textarea id="guideText" class="guide" rows="14">Hãy tổng hợp quy trình chúng ta vừa làm trong cuộc trò chuyện này thành MỘT file prompt, để tôi lưu vào kho Prompt Kit và dùng lại cho lần sau.
+    <textarea id="guideText" class="guide" rows="14">Hãy tổng hợp việc chúng ta vừa làm trong cuộc trò chuyện này thành MỘT file prompt (.md) để tôi lưu vào kho Prompt Kit.
+Trang Prompt Kit sẽ đọc file này và hiện thành các bảng ô tích; người dùng tích chọn xong, trang tự ghép ra prompt hoàn chỉnh để dán cho AI.
 
-Yêu cầu:
-1. Tên file: không dấu, chữ thường, nối bằng dấu gạch ngang, đuôi .md (ví dụ: dat-ten-ban-ve.md).
-2. Đầu file là phần khai báo đúng mẫu dưới đây, giữ nguyên dòng --- ở đầu và cuối:
+Trước tiên tóm tắt cuộc trò chuyện, chỉ giữ lại thông tin CUỐI CÙNG (những gì đã thống nhất, đã sửa, đã chốt); bỏ những gì đã bị thay thế hoặc mâu thuẫn nhau.
+Sau đó viết file đúng khung dưới đây. Giữ nguyên các dòng ---, các dấu | và khối ```bang-tich.
+
+========== KHUNG FILE ==========
 ---
 title: Tên ngắn gọn, tiếng Việt có dấu
 description: Một câu nói rõ KHI NÀO thì dùng prompt này
 tags: [tu-khoa-1, tu-khoa-2]
 skill: true
 ---
-3. Phần thân viết bằng Markdown, đủ để một AI khác làm lại được từ đầu mà không cần đọc cuộc trò chuyện này:
-   - Mục tiêu và kết quả cần ra
-   - Đầu vào cần chuẩn bị
-   - Các bước làm, theo thứ tự
-   - Quy tắc, quy ước đã thống nhất (cách đặt tên, định dạng, bảng tra...)
-   - Lỗi đã gặp và cách tránh
-   - Cách kiểm tra kết quả
-4. Chỗ nào mỗi lần dùng sẽ khác (tên dự án, đường dẫn, số liệu...) thì viết dạng {{ten_bien}} (không dấu, nối bằng gạch dưới).
-   Chỗ nào thường chỉ chọn trong vài lựa chọn quen thuộc thì thêm một dòng vào phần khai báo đầu file (ngay trên dòng --- cuối), để trang hiện thành ô tích:
-   ten_bien: [Lựa chọn 1, Lựa chọn 2, Lựa chọn 3]
-5. Không đưa vào: mật khẩu, token, email, số điện thoại, thông tin riêng của khách hàng.
 
-Xuất kết quả thành file .md để tôi tải về. Nếu không tạo được file thì in toàn bộ nội dung trong MỘT khối code duy nhất để tôi sao chép.</textarea>
+# Vai trò
+Bạn là ... (một câu)
+
+# Nhiệm vụ
+... (một đến ba câu; chỗ nào thay đổi theo từng lần thì viết {{ten_bien}})
+
+{{bang_tich}}
+
+# Cách làm
+1. ...
+2. ...
+3. ...
+
+# Kiểm tra trước khi giao
+- ...
+
+```bang-tich
+# Bảng 1: Tên nhóm thứ nhất
+ten_bien | Nhãn hiện ra | một | Lựa chọn A, Lựa chọn B, Lựa chọn C
+ten_bien_khac | Nhãn hiện ra | nhiều | Lựa chọn A, Lựa chọn B, Lựa chọn C, Lựa chọn D
+
+# Bảng 2: Tên nhóm thứ hai
+ten_bien | Nhãn hiện ra | chữ | VD: gợi ý điền
+ten_bien | Nhãn hiện ra | đoạn | VD: gợi ý cho đoạn dài
+```
+========== HẾT KHUNG ==========
+
+Quy tắc cho khối bang-tich:
+1. Mỗi dòng bắt đầu bằng # là tên một bảng (Bảng 1, Bảng 2, Bảng 3...). Gom các ô liên quan vào cùng bảng, 2 đến 5 bảng là vừa.
+2. Mỗi dòng còn lại là một ô, gồm 4 cột cách nhau bằng dấu |
+   - Cột 1: tên biến, không dấu, chữ thường, nối bằng gạch dưới (vd: phong_cach). Không trùng nhau.
+   - Cột 2: nhãn hiện cho người dùng, tiếng Việt có dấu (vd: Phong cách).
+   - Cột 3: kiểu ô: "một" = chỉ chọn một; "nhiều" = chọn được nhiều; "chữ" = gõ một dòng; "đoạn" = gõ nhiều dòng.
+   - Cột 4: với "một"/"nhiều": các lựa chọn hay dùng nhất, cách nhau bằng dấu phẩy, 3 đến 8 lựa chọn, ngắn gọn, KHÔNG chứa dấu phẩy bên trong. Với "chữ"/"đoạn": một câu gợi ý bắt đầu bằng "VD:".
+3. Nên có một bảng "Giữ nguyên và tránh" (những gì AI không được thay đổi, những lỗi hay gặp) nếu việc này có lỗi đã gặp.
+4. Lựa chọn rút ra từ chính cuộc trò chuyện này: cái gì tôi đã chọn, đã sửa, đã phàn nàn thì đưa vào.
+5. {{bang_tich}} là chỗ trang tự chèn danh sách người dùng đã tích. Có thể dùng thêm {{ten_bien}} trong phần Nhiệm vụ để thay đúng chỗ; mọi {{ten_bien}} đã dùng đều phải có trong khối bang-tich.
+6. Không đưa vào: mật khẩu, token, email, số điện thoại, thông tin riêng của khách hàng.
+7. Tên file: không dấu, chữ thường, nối bằng gạch ngang, đuôi .md (vd: dien-hoa-kien-truc.md).
+
+Xuất kết quả thành file .md để tôi tải về. Nếu không tạo được file thì in toàn bộ nội dung trong MỘT khối code (dùng 4 dấu ```` bọc ngoài để không vỡ khối bang-tich bên trong).</textarea>
   </div>
   <footer>
+    <button class="ghost" id="guideHand" title="Không dùng chatbot, tự gõ prompt">Tự viết tay</button>
     <span class="spacer" style="flex:1"></span>
-    <button onclick="dlgGuide.close()">Đóng</button>
+    <button id="guideUp" title="Đã có file .md từ chatbot">Tải file lên</button>
     <button class="primary" id="guideCopy">Sao chép</button>
   </footer>
 </dialog>
@@ -339,6 +391,96 @@ Xuất kết quả thành file .md để tôi tải về. Nếu không tạo đ�
 <script>
 const $ = s => document.querySelector(s);
 const LS = 'promptkit.cfg';
+/* ---------- ngôn ngữ giao diện (VI / EN) ---------- */
+let LANG = 'vi';
+try{ LANG = localStorage.getItem('promptkit.lang') || 'vi'; }catch{}
+const L = (vi, en) => LANG === 'en' ? en : vi;
+const EN = {
+ "chưa cấu hình": "not configured",
+ "Chọn file .md do chatbot xuất ra để thêm vào kho (hoặc kéo thả file vào trang)": "Pick a .md file exported by a chatbot to add it to the library (or drag & drop it onto the page)",
+ "Tải lên": "Upload",
+ "Lấy đoạn hướng dẫn dán vào chatbot: nó tóm cuộc trò chuyện thành file prompt đúng khung M5 Prompt Kit": "Get the instruction to paste into a chatbot: it turns the conversation into a prompt file in M5 Prompt Kit format",
+ "+ Prompt mới": "+ New prompt",
+ "Đọc lại danh sách prompt từ GitHub": "Reload the prompt list from GitHub",
+ "Tải lại": "Reload",
+ "Chọn repo và dán token GitHub": "Choose the repo and paste a GitHub token",
+ "Cài đặt": "Settings",
+ "Đổi nền tối / sáng": "Switch dark / light",
+ "Kho prompt": "Reusable",
+ "dùng lại": "prompts",
+ "Chọn prompt": "Pick prompts",
+ "Tìm theo tên, mô tả, thẻ…": "Search by name, description, tag…",
+ "Bỏ tích mọi prompt đã chọn": "Untick all selected prompts",
+ "Bỏ chọn": "Clear",
+ "Điền chỗ trống": "Fill in the blanks",
+ "Tích chọn nhanh, hoặc gõ vào ô \"Khác…\". Bỏ trống thì giữ nguyên chỗ đó để AI tự hỏi.": "Tick to choose, or type in \"Other…\". Leave a blank empty and the AI will ask you.",
+ "AI làm việc thế nào": "How the AI should work",
+ "Những dòng tích ở đây được thêm vào cuối prompt. Trang nhớ lựa chọn cho lần sau.": "Ticked rules are added to the end of the prompt. The page remembers them.",
+ "Copy, dán cho AI": "Copy, paste to the AI",
+ "Mở lại một bộ prompt đã lưu": "Reopen a saved set of prompts",
+ "Lưu các prompt đang chọn thành một bộ, lần sau chọn lại một lần": "Save the selected prompts as a set to reuse in one click",
+ "Lưu bộ": "Save set",
+ "Chép toàn bộ prompt bên dưới để dán vào Claude": "Copy the whole prompt below to paste into Claude",
+ "Tải prompt về thành file .md": "Download the prompt as a .md file",
+ "Tải .md": "Download .md",
+ "Cài đặt kho": "Library settings",
+ "Chủ repo (user/org)": "Repo owner (user/org)",
+ "Tên repo": "Repo name",
+ "Nhánh": "Branch",
+ "Thư mục prompt": "Prompt folder",
+ "GitHub token (tuỳ chọn — cần khi muốn thêm/xoá/lưu bộ, hoặc repo private)": "GitHub token (optional — needed to add/delete/save sets, or for a private repo)",
+ "Xoá token": "Remove token",
+ "Đóng": "Close",
+ "Lưu": "Save",
+ "Tên file (không dấu, nối bằng -)": "File name (no accents, words joined by -)",
+ "Tiêu đề": "Title",
+ "Mô tả (khi nào dùng)": "Description (when to use it)",
+ "Thẻ, cách nhau bằng dấu phẩy": "Tags, comma separated",
+ "Thành skill": "Make it a skill",
+ "Xoá prompt": "Delete prompt",
+ "Huỷ": "Cancel",
+ "Prompt Kit — quy trình làm việc đã chuẩn hoá, dùng lại trên mọi máy.": "Prompt Kit — standardised workflows, reusable on any machine.",
+ "Trang M5 STUDIO →": "M5 STUDIO website →",
+ "Prompt mới — nhờ chatbot tóm cuộc trò chuyện": "New prompt — let the chatbot summarise the conversation",
+ "Đoạn lệnh dán vào chat (sửa thêm được nếu muốn)": "Instruction to paste into the chat (you can edit it)",
+ "Không dùng chatbot, tự gõ prompt": "Write the prompt yourself, without a chatbot",
+ "Tự viết tay": "Write by hand",
+ "Đã có file .md từ chatbot": "Already have a .md file from the chatbot",
+ "Tải file lên": "Upload file",
+ "Sao chép": "Copy",
+ "Đổi sang tiếng Việt": "Đổi sang tiếng Việt"
+};
+const GUIDE = {vi: "Hãy tổng hợp việc chúng ta vừa làm trong cuộc trò chuyện này thành MỘT file prompt (.md) để tôi lưu vào kho Prompt Kit.\nTrang Prompt Kit sẽ đọc file này và hiện thành các bảng ô tích; người dùng tích chọn xong, trang tự ghép ra prompt hoàn chỉnh để dán cho AI.\n\nTrước tiên tóm tắt cuộc trò chuyện, chỉ giữ lại thông tin CUỐI CÙNG (những gì đã thống nhất, đã sửa, đã chốt); bỏ những gì đã bị thay thế hoặc mâu thuẫn nhau.\nSau đó viết file đúng khung dưới đây. Giữ nguyên các dòng ---, các dấu | và khối ```bang-tich.\n\n========== KHUNG FILE ==========\n---\ntitle: Tên ngắn gọn, tiếng Việt có dấu\ndescription: Một câu nói rõ KHI NÀO thì dùng prompt này\ntags: [tu-khoa-1, tu-khoa-2]\nskill: true\n---\n\n# Vai trò\nBạn là ... (một câu)\n\n# Nhiệm vụ\n... (một đến ba câu; chỗ nào thay đổi theo từng lần thì viết {{ten_bien}})\n\n{{bang_tich}}\n\n# Cách làm\n1. ...\n2. ...\n3. ...\n\n# Kiểm tra trước khi giao\n- ...\n\n```bang-tich\n# Bảng 1: Tên nhóm thứ nhất\nten_bien | Nhãn hiện ra | một | Lựa chọn A, Lựa chọn B, Lựa chọn C\nten_bien_khac | Nhãn hiện ra | nhiều | Lựa chọn A, Lựa chọn B, Lựa chọn C, Lựa chọn D\n\n# Bảng 2: Tên nhóm thứ hai\nten_bien | Nhãn hiện ra | chữ | VD: gợi ý điền\nten_bien | Nhãn hiện ra | đoạn | VD: gợi ý cho đoạn dài\n```\n========== HẾT KHUNG ==========\n\nQuy tắc cho khối bang-tich:\n1. Mỗi dòng bắt đầu bằng # là tên một bảng (Bảng 1, Bảng 2, Bảng 3...). Gom các ô liên quan vào cùng bảng, 2 đến 5 bảng là vừa.\n2. Mỗi dòng còn lại là một ô, gồm 4 cột cách nhau bằng dấu |\n   - Cột 1: tên biến, không dấu, chữ thường, nối bằng gạch dưới (vd: phong_cach). Không trùng nhau.\n   - Cột 2: nhãn hiện cho người dùng, tiếng Việt có dấu (vd: Phong cách).\n   - Cột 3: kiểu ô: \"một\" = chỉ chọn một; \"nhiều\" = chọn được nhiều; \"chữ\" = gõ một dòng; \"đoạn\" = gõ nhiều dòng.\n   - Cột 4: với \"một\"/\"nhiều\": các lựa chọn hay dùng nhất, cách nhau bằng dấu phẩy, 3 đến 8 lựa chọn, ngắn gọn, KHÔNG chứa dấu phẩy bên trong. Với \"chữ\"/\"đoạn\": một câu gợi ý bắt đầu bằng \"VD:\".\n3. Nên có một bảng \"Giữ nguyên và tránh\" (những gì AI không được thay đổi, những lỗi hay gặp) nếu việc này có lỗi đã gặp.\n4. Lựa chọn rút ra từ chính cuộc trò chuyện này: cái gì tôi đã chọn, đã sửa, đã phàn nàn thì đưa vào.\n5. {{bang_tich}} là chỗ trang tự chèn danh sách người dùng đã tích. Có thể dùng thêm {{ten_bien}} trong phần Nhiệm vụ để thay đúng chỗ; mọi {{ten_bien}} đã dùng đều phải có trong khối bang-tich.\n6. Không đưa vào: mật khẩu, token, email, số điện thoại, thông tin riêng của khách hàng.\n7. Tên file: không dấu, chữ thường, nối bằng gạch ngang, đuôi .md (vd: dien-hoa-kien-truc.md).\n\nXuất kết quả thành file .md để tôi tải về. Nếu không tạo được file thì in toàn bộ nội dung trong MỘT khối code (dùng 4 dấu ```` bọc ngoài để không vỡ khối bang-tich bên trong).", en: "Please turn what we just did in this conversation into ONE prompt file (.md) that I can save in my Prompt Kit library.\nPrompt Kit reads this file and shows it as tick-box tables; after the user ticks their choices, the page assembles a complete prompt to paste into an AI.\n\nFirst summarise the conversation and keep only the FINAL decisions (what was agreed, corrected and confirmed), then write the file in exactly the template below. Keep the --- lines, the | separators and the ```bang-tich block as they are.\n\n========== TEMPLATE ==========\n---\ntitle: Short name\ndescription: One sentence saying WHEN to use this prompt\ntags: [keyword-1, keyword-2]\nskill: true\n---\n\n# Role\nYou are ... (one sentence)\n\n# Task\n... (one to three sentences; anything that changes each time is written as {{variable_name}})\n\n{{bang_tich}}\n\n# Steps\n1. ...\n2. ...\n3. ...\n\n# Check before delivering\n- ...\n\n```bang-tich\n# Table 1: Name of the first group\nvariable_name | Label shown to the user | one | Option A, Option B, Option C\nother_variable | Label shown to the user | many | Option A, Option B, Option C, Option D\n\n# Table 2: Name of the second group\nvariable_name | Label shown to the user | text | e.g. a hint\nvariable_name | Label shown to the user | paragraph | e.g. a hint for a longer text\n```\n========== END OF TEMPLATE ==========\n\nRules for the bang-tich block:\n1. Each line starting with # is the name of a table (Table 1, Table 2, Table 3...). Group related fields together; 2 to 5 tables is about right.\n2. Every other line is one field with 4 columns separated by |\n   - Column 1: variable name, lowercase, no accents, words joined by underscores (e.g. style). No duplicates.\n   - Column 2: the label shown to the user.\n   - Column 3: field type: \"one\" = pick one; \"many\" = pick several; \"text\" = one line of text; \"paragraph\" = several lines.\n   - Column 4: for \"one\"/\"many\": the most common options, separated by commas, 3 to 8 short options, with NO commas inside an option. For \"text\"/\"paragraph\": one hint starting with \"e.g.\".\n3. Add a \"Keep and avoid\" table (what the AI must not change, mistakes that happened) if this task had mistakes along the way.\n4. Take the options from this very conversation: what I chose, corrected or complained about goes in.\n5. {{bang_tich}} is where the page inserts the user's ticked choices. You may also use {{variable_name}} inside the Task section to place a value exactly there; every {{variable_name}} used must exist in the bang-tich block.\n6. Never include: passwords, tokens, emails, phone numbers, or clients' private information.\n7. File name: lowercase, no accents, words joined by hyphens, .md extension (e.g. architectural-rendering.md).\n\nExport the result as a .md file for me to download. If you cannot create a file, print the whole content in ONE code block (wrap it with 4 backticks ```` so the inner bang-tich block does not break it)."};
+const I18N_SKIP = '#list,#picked,#preview,#vars,#guideText,#eCheck,#eLock,#ownerTag,#repoLabel,#rules,script,style,[data-en]';
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if(el.dataset.vi === undefined) el.dataset.vi = el.innerHTML;
+    el.innerHTML = LANG === 'en' ? el.dataset.en : el.dataset.vi;
+  });
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT,
+    {acceptNode: n => n.parentElement && n.parentElement.closest(I18N_SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT});
+  let n;
+  while((n = w.nextNode())){
+    if(n._vi === undefined){ const k = n.nodeValue.trim(); if(!k || !EN[k]) continue; n._vi = n.nodeValue; n._k = k; }
+    n.nodeValue = LANG === 'en' ? n._vi.replace(n._k, EN[n._k]) : n._vi;
+  }
+  document.querySelectorAll('[placeholder],[title]').forEach(el => {
+    if(el.closest('#list,#picked,#vars,#rules')) return;
+    for(const a of ['placeholder','title']){
+      if(!el.hasAttribute(a)) continue;
+      const key = 'vi' + a;
+      if(el.dataset[key] === undefined){ const v = el.getAttribute(a); if(!EN[v]) continue; el.dataset[key] = v; }
+      el.setAttribute(a, LANG === 'en' ? EN[el.dataset[key]] : el.dataset[key]);
+    }
+  });
+  const g = $('#guideText');
+  if(g && (g.value.trim() === GUIDE.vi || g.value.trim() === GUIDE.en || !g.value.trim())) g.value = GUIDE[LANG];
+  document.body.dataset.drop = L('Thả file .md vào đây để tải lên', 'Drop the .md file here to upload');
+  const b = $('#btnLang'); b.textContent = LANG === 'en' ? 'VI' : 'EN'; b.title = LANG === 'en' ? 'Tiếng Việt' : 'English';
+  const o = $('#comboSel').options[0]; if(o) o.text = L('— Bộ đã lưu —', '— Saved sets —');
+}
+
 const API = 'https://api.github.com';
 
 let cfg = {owner:'', repo:'', branch:'main', dir:'prompts', token:''};
@@ -392,22 +534,22 @@ const ref = () => '?ref=' + encodeURIComponent(cfg.branch || 'main');
 
 async function loadAll(){
   if(!cfg.owner || !cfg.repo){ renderList(); return; }
-  $('#list').innerHTML = '<li class="empty">Đang tải…</li>';
+  $('#list').innerHTML = '<li class="empty">' + L('Đang tải…','Loading…') + '</li>';
   try{
     const dir = await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.dir}${ref()}`);
-    if(!dir){ $('#list').innerHTML = '<li class="empty">Không tìm thấy thư mục '+cfg.dir+'.</li>'; return; }
+    if(!dir){ $('#list').innerHTML = '<li class="empty">' + L('Không tìm thấy thư mục ','Folder not found: ') + cfg.dir + '.</li>'; return; }
     const files = dir.filter(f => f.type === 'file' && f.name.endsWith('.md') && !f.name.startsWith('_'));
     prompts = await Promise.all(files.map(async f => {
       const c = await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${f.path}${ref()}`);
       const text = b64decode(c.content);
       const [meta, body] = parseFM(text);
-      return {file:f.name, path:f.path, sha:c.sha, meta, body};
+      return {file:f.name, path:f.path, sha:c.sha, meta, body, chk:checkPrompt(meta, body)};
     }));
     prompts.sort((a,b)=>(a.meta.title||a.file).localeCompare(b.meta.title||b.file,'vi'));
     await loadCombos();
     renderList(); renderPicked();
   }catch(e){
-    $('#list').innerHTML = '<li class="empty">Lỗi tải: '+e.message+'</li>';
+    $('#list').innerHTML = '<li class="empty">' + L('Lỗi tải: ','Loading failed: ') + e.message + '</li>';
   }
 }
 async function loadCombos(){
@@ -417,11 +559,11 @@ async function loadCombos(){
     else { combos = (JSON.parse(b64decode(c.content)).combos)||[]; combosSha = c.sha; }
   }catch{ combos = []; }
   const sel = $('#comboSel');
-  sel.innerHTML = '<option value="">— Bộ đã lưu —</option>' +
+  sel.innerHTML = '<option value="">' + L('— Bộ đã lưu —','— Saved sets —') + '</option>' +
     combos.map((c,i)=>`<option value="${i}">${c.name}</option>`).join('');
 }
 async function putFile(path, text, sha, msg){
-  if(!cfg.token) throw new Error('Cần GitHub token trong Cài đặt để ghi vào repo.');
+  if(!cfg.token) throw new Error(L('Cần GitHub token trong Cài đặt để ghi vào repo.','A GitHub token in Settings is needed to write to the repo.'));
   return gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${path}`, {
     method:'PUT',
     body: JSON.stringify({message:msg, content:b64encode(text), sha:sha||undefined,
@@ -439,105 +581,191 @@ function renderList(){
     p.file.toLowerCase().includes(q));
   $('#libCount').textContent = prompts.length ? items.length + '/' + prompts.length : '';
   if(!prompts.length){
-    $('#list').innerHTML = '<li class="empty">Chưa có prompt nào. Bấm <b>Tạo hướng dẫn</b> hoặc <b>+ Prompt mới</b>, hoặc kiểm tra Cài đặt kho.</li>';
+    $('#list').innerHTML = '<li class="empty">' + L('Chưa có prompt nào. Bấm <b>+ Prompt mới</b>, hoặc kiểm tra Cài đặt kho.','No prompts yet. Click <b>+ New prompt</b>, or check Settings.') + '</li>';
     return;
   }
   $('#list').innerHTML = items.map(p => `
-    <li class="item${picked.includes(p.file)?' on':''}" data-f="${p.file}">
+    <li class="item${picked.includes(p.file)?' on':''}${p.chk && p.chk.err.length ? ' bad' : ''}" data-f="${p.file}">
       <span class="tick"></span>
       <div style="flex:1">
         <div class="t">${p.meta.title || p.file}</div>
         <div class="d">${p.meta.description || ''}</div>
         <div class="tags">${(p.meta.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}
-          ${p.meta.skill ? '<span class="tag sk">skill</span>' : ''}</div>
+          ${p.meta.skill ? '<span class="tag sk">skill</span>' : ''}
+          ${p.chk && p.chk.err.length ? '<span class="tag err">' + L('LỖI','ERROR') + '</span>' : ''}</div>
+        ${p.chk && p.chk.err.length ? '<ul class="errs">' + p.chk.err.map(e => '<li>' + escH(e) + '</li>').join('') + '</ul>' : ''}
       </div>
-      <button class="ghost edit" title="Sửa">✎</button>
+      ${p.chk && p.chk.err.length && cfg.token ? '<button class="del" title="' + L('Xoá hẳn prompt lỗi này khỏi kho (hỏi lại trước khi xoá)','Delete this broken prompt from the library (asks first)') + '">' + L('Xoá','Delete') + '</button>' : ''}
+      <button class="ghost edit" title="${L('Sửa','Edit')}">✎</button>
     </li>`).join('');
 }
 function renderPicked(){
   const box = $('#picked');
   if(!picked.length){
-    box.innerHTML = '<div class="empty">Chưa chọn prompt nào.</div>';
+    box.innerHTML = '<div class="empty">' + L('Chưa chọn prompt nào.','No prompt selected.') + '</div>';
   }else{
     box.innerHTML = picked.map((f,i)=>{
       const p = prompts.find(x=>x.file===f);
       return `<div class="chip" draggable="true" data-i="${i}">
-        <span class="h" title="Kéo để đổi thứ tự">⋮⋮</span><span class="nm">${p ? (p.meta.title||f) : f}</span>
+        <span class="h" title="${L('Kéo để đổi thứ tự','Drag to reorder')}">⋮⋮</span><span class="nm">${p ? (p.meta.title||f) : f}</span>
         <button class="ghost rm" data-f="${f}">✕</button></div>`;
     }).join('');
   }
   renderVars(); renderPreview();
 }
-function allVars(){
-  const vs = [];
-  picked.forEach(f=>{
-    const p = prompts.find(x=>x.file===f);
-    if(p) varsOf(p.body).forEach(v=>{ if(!vs.includes(v)) vs.push(v); });
-  });
-  return vs;
+/* Khối bảng tích trong file prompt (AI viết, trang đọc):
+   ```bang-tich
+   # Bảng 1: Hình gốc
+   ten_bien | Nhãn hiện ra | một / nhiều / chữ / đoạn | lựa chọn A, B, C  (hoặc chữ gợi ý cho ô gõ)
+   ```
+   Trong thân prompt: {{ten_bien}} để thay đúng chỗ; {{bang_tich}} để chèn danh sách đã chọn;
+   không có {{bang_tich}} thì danh sách đã chọn được thêm vào cuối. */
+const FORM_RE = /```bang-tich[^\n]*\n([\s\S]*?)```/;
+const KINDS = {'một':'mot','mot':'mot','one':'mot','nhiều':'nhieu','nhieu':'nhieu','many':'nhieu','chữ':'chu','chu':'chu','text':'chu','đoạn':'doan','doan':'doan','paragraph':'doan'};
+function bodyOf(p){ return p.body.replace(FORM_RE, '').trim(); }
+function formOf(p){
+  const out = [], m = p.body.match(FORM_RE);
+  let g = '';
+  if(m) for(const raw of m[1].split('\n')){
+    const line = raw.trim(); if(!line) continue;
+    if(line.startsWith('#')){ g = line.replace(/^#+\s*/, ''); continue; }
+    const c = line.split('|').map(s => s.trim());
+    if(!/^[a-zA-Z0-9_]+$/.test(c[0] || '') || c[0] === 'bang_tich') continue;
+    const kind = KINDS[(c[2] || '').toLowerCase()] || (c[3] ? 'nhieu' : 'chu');
+    const list = (kind === 'mot' || kind === 'nhieu') ? (c[3] || '').split(',').map(s => s.trim()).filter(Boolean) : null;
+    out.push({g, v:c[0], label:c[1] || varLabel(c[0]), kind, opts:(list && list.length) ? list : null, ph:list ? '' : (c[3] || '')});
+  }
+  for(const v of varsOf(bodyOf(p))) if(v !== 'bang_tich' && !out.some(f => f.v === v)){
+    const o = Array.isArray(p.meta[v]) && p.meta[v].length ? p.meta[v] : null;
+    out.push({g:'', v, label:varLabel(v), kind:o ? 'nhieu' : 'chu', opts:o, ph:''});
+  }
+  return out;
 }
+/* Soát một prompt: err = không cho lưu / không cho dùng, warn = chỉ nhắc */
+function checkPrompt(meta, body){
+  const err = [], warn = [];
+  if(!meta.title) err.push(L('Thiếu "title:" ở phần khai báo đầu file (giữa hai dòng ---).','Missing "title:" in the header (between the two --- lines).'));
+  if(!meta.description) err.push(L('Thiếu "description:" ở phần khai báo đầu file.','Missing "description:" in the header.'));
+  const opens = (body.match(/`{3,}bang-tich/g) || []).length;
+  if(opens > 1) err.push(L('Có ' + opens + ' khối bang-tich — chỉ được một.', opens + ' bang-tich blocks found — only one is allowed.'));
+  const m = body.match(FORM_RE);
+  if(opens && !m) err.push(L('Khối bang-tich thiếu dòng ``` đóng lại.','The bang-tich block has no closing ``` line.'));
+  const rest = m ? body.replace(FORM_RE, '') : body;
+  if(rest.replace(/\{\{\s*bang_tich\s*\}\}/g, '').trim().length < 30) err.push(L('Phần nội dung prompt trống hoặc quá ngắn.','The prompt content is empty or too short.'));
+  const seen = {};
+  if(m){
+    let n = 0, g = null, gN = 0;
+    const endG = () => { if(g !== null && gN === 0) warn.push(L('Bảng "' + g + '" không có ô nào.', 'Table "' + g + '" has no fields.')); };
+    m[1].split('\n').forEach((raw, i) => {
+      const line = raw.trim(); if(!line) return;
+      const at = L('Bảng tích, dòng ', 'Tick table, line ') + (i + 1);
+      if(line.startsWith('#')){ endG(); g = line.replace(/^#+\s*/, ''); gN = 0; return; }
+      const c = line.split('|').map(s => s.trim());
+      if(c.length < 3){ err.push(at + L(': thiếu cột — cần dạng ten_bien | Nhãn | kiểu | lựa chọn.', ': missing columns — expected name | Label | type | options.')); return; }
+      if(c.length > 4) err.push(at + L(': thừa dấu | — các lựa chọn phải cách nhau bằng dấu phẩy.', ': too many | — options must be separated by commas.'));
+      if(!/^[a-z0-9_]+$/.test(c[0])) err.push(at + L(': tên biến "' + c[0] + '" phải không dấu, chữ thường, nối bằng _.', ': variable "' + c[0] + '" must be lowercase, no accents, joined by _.'));
+      else if(seen[c[0]]) err.push(at + L(': tên biến "' + c[0] + '" bị trùng với dòng trước.', ': variable "' + c[0] + '" is used twice.'));
+      seen[c[0]] = 1;
+      if(!c[1]) err.push(at + L(': thiếu nhãn (cột 2).', ': missing label (column 2).'));
+      const k = KINDS[(c[2] || '').toLowerCase()];
+      if(!k) err.push(at + L(': kiểu ô "' + c[2] + '" không hợp lệ — phải là một, nhiều, chữ hoặc đoạn.', ': field type "' + c[2] + '" is invalid — use one, many, text or paragraph.'));
+      else if(k === 'mot' || k === 'nhieu'){
+        const o = (c[3] || '').split(',').map(s => s.trim()).filter(Boolean);
+        if(o.length < 2) err.push(at + L(': ô "' + (c[1] || c[0]) + '" cần ít nhất 2 lựa chọn.', ': field "' + (c[1] || c[0]) + '" needs at least 2 options.'));
+        if(new Set(o).size !== o.length) warn.push(at + L(': có lựa chọn lặp lại.', ': an option is repeated.'));
+      }
+      n++; gN++;
+    });
+    endG();
+    if(!n) err.push(L('Khối bang-tich không có ô nào.','The bang-tich block has no fields.'));
+    if(!/\{\{\s*bang_tich\s*\}\}/.test(rest)) warn.push(L('Không có {{bang_tich}} — các lựa chọn sẽ được thêm vào cuối prompt.','No {{bang_tich}} — ticked choices will be added at the end of the prompt.'));
+  }
+  const vs = varsOf(rest).filter(v => v !== 'bang_tich');
+  if(m) vs.forEach(v => { if(!seen[v]) err.push(L('Nội dung dùng {{' + v + '}} nhưng bảng tích không có ô nào tên ' + v + ' — mâu thuẫn.', 'The content uses {{' + v + '}} but no field named ' + v + ' exists — contradiction.')); });
+  if(/github_pat_|ghp_[A-Za-z0-9]{20}|sk-[A-Za-z0-9-]{20}|mật khẩu\s*:|password\s*[:=]/i.test(body))
+    err.push(L('Có vẻ chứa mật khẩu hoặc token — xoá phần đó trước khi lưu.','Looks like it contains a password or token — remove it before saving.'));
+  return {err, warn};
+}
+function allFields(){
+  const fs = [];
+  picked.forEach(f => { const p = prompts.find(x => x.file === f);
+    if(p) formOf(p).forEach(x => { if(!fs.some(y => y.v === x.v)) fs.push(x); }); });
+  return fs;
+}
+function allVars(){ return allFields().map(f => f.v); }
 const RULES = [
-  {id:'now',  label:'Làm luôn, không bàn lại', full:'Không bàn lại từ đầu. Làm theo đúng mô tả này.'},
-  {id:'ask',  label:'Thiếu thì hỏi trước',     full:'Nếu thiếu thông tin quan trọng, hỏi tôi tối đa 3 câu rồi mới làm. Không tự đoán.'},
-  {id:'echo', label:'Nhắc lại cách hiểu',      full:'Trước khi làm, nhắc lại cách bạn hiểu yêu cầu trong tối đa 3 dòng.'},
-  {id:'step', label:'Từng bước, chờ duyệt',    full:'Làm từng bước. Xong mỗi bước thì dừng, chờ tôi duyệt.'},
-  {id:'check',label:'Tự soát trước khi giao',  full:'Trước khi giao kết quả, tự soát lại theo phần kiểm tra trong hướng dẫn và nói rõ chỗ nào chưa chắc.'},
-  {id:'short',label:'Trả lời ngắn',            full:'Trả lời ngắn. Không giải thích dài, không lặp lại đề bài.'},
-  {id:'vi',   label:'Tiếng Việt',              full:'Trả lời bằng tiếng Việt.'}
+  {id:'now',  label:'Làm luôn, không bàn lại', full:'Không bàn lại từ đầu. Làm theo đúng mô tả này.', en:'Just do it, no re-brainstorming', fen:'Do not re-brainstorm from scratch. Follow this description exactly.'},
+  {id:'ask',  label:'Thiếu thì hỏi trước',     full:'Nếu thiếu thông tin quan trọng, hỏi tôi tối đa 3 câu rồi mới làm. Không tự đoán.', en:'Ask first if unclear', fen:'If important information is missing, ask me at most 3 questions before starting. Do not guess.'},
+  {id:'echo', label:'Nhắc lại cách hiểu',      full:'Trước khi làm, nhắc lại cách bạn hiểu yêu cầu trong tối đa 3 dòng.', en:'Restate your understanding', fen:'Before starting, restate your understanding of the request in at most 3 lines.'},
+  {id:'step', label:'Từng bước, chờ duyệt',    full:'Làm từng bước. Xong mỗi bước thì dừng, chờ tôi duyệt.', en:'Step by step, wait for approval', fen:'Work step by step. After each step, stop and wait for my approval.'},
+  {id:'check',label:'Tự soát trước khi giao',  full:'Trước khi giao kết quả, tự soát lại theo phần kiểm tra trong hướng dẫn và nói rõ chỗ nào chưa chắc.', en:'Self-check before delivering', fen:'Before delivering, check the result against the checks in the instructions and say clearly what you are unsure about.'},
+  {id:'short',label:'Trả lời ngắn',            full:'Trả lời ngắn. Không giải thích dài, không lặp lại đề bài.', en:'Keep it short', fen:'Keep answers short. No long explanations, do not repeat the task.'},
+  {id:'vi',   label:'Tiếng Việt',              full:'Trả lời bằng tiếng Việt.', en:'Answer in Vietnamese', fen:'Answer in Vietnamese.'},
+  {id:'en',   label:'Tiếng Anh',               full:'Trả lời bằng tiếng Anh.', en:'English', fen:'Answer in English.'}
 ];
 let rulesOn = {ask:true, vi:true};
 try{ const r = JSON.parse(localStorage.getItem('promptkit.rules')||'null'); if(r) rulesOn = r; }catch{}
 const varState = {};   // ten_bien -> {p:[lựa chọn đã tích], t:'chữ gõ thêm'}
 const escH = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function varLabel(v){ const s = v.replace(/_/g,' '); return s.charAt(0).toUpperCase() + s.slice(1); }
-function varOpts(v){
-  for(const f of picked){
-    const p = prompts.find(x=>x.file===f);
-    if(p && Array.isArray(p.meta[v]) && p.meta[v].length) return p.meta[v];
-  }
-  return null;
-}
 function varText(v){
   const s = varState[v]; if(!s) return '';
   return s.p.concat(s.t.trim() ? [s.t.trim()] : []).join(', ');
 }
 function renderVars(){
-  const vs = allVars(), box = $('#vars');
-  if(!vs.length){
-    box.innerHTML = '<div class="empty">' + (picked.length ? 'Prompt đã chọn không có chỗ nào cần điền.' : 'Tích chọn prompt ở Bước 1 trước.') + '</div>';
+  const fs = allFields(), box = $('#vars');
+  if(!fs.length){
+    box.innerHTML = '<div class="empty">' + (picked.length ? L('Prompt đã chọn không có chỗ nào cần điền.','The selected prompts have no blanks.') : L('Tích chọn prompt ở Bước 1 trước.','Tick a prompt in Step 1 first.')) + '</div>';
     return;
   }
-  box.innerHTML = vs.map(v=>{
-    const s = varState[v] = varState[v] || {p:[], t:''};
-    const opts = varOpts(v);
-    const cks = opts ? '<div class="cks">' + opts.map(o =>
-      `<button type="button" class="ck" data-v="${escH(v)}" data-o="${escH(o)}" aria-pressed="${s.p.includes(o)}"><i></i>${escH(o)}</button>`).join('') + '</div>' : '';
-    return `<div class="fld"><label for="v-${escH(v)}">${escH(varLabel(v))}<small>{{${escH(v)}}}</small></label>${cks}
-      <input id="v-${escH(v)}" data-v="${escH(v)}" value="${escH(s.t)}" placeholder="${opts ? 'Khác…' : 'Gõ vào đây…'}"></div>`;
-  }).join('');
+  let g = null, html = '';
+  for(const f of fs){
+    if(f.g !== g){ g = f.g; if(g) html += `<div class="grp">${escH(g)}</div>`; }
+    const s = varState[f.v] = varState[f.v] || {p:[], t:''};
+    const cks = f.opts ? '<div class="cks">' + f.opts.map(o =>
+      `<button type="button" class="ck${f.kind === 'mot' ? ' one' : ''}" data-v="${escH(f.v)}" data-k="${f.kind}" data-o="${escH(o)}" aria-pressed="${s.p.includes(o)}"><i></i>${escH(o)}</button>`).join('') + '</div>' : '';
+    const hint = f.kind === 'mot' ? L('chọn một','pick one') : f.kind === 'nhieu' ? L('chọn nhiều','pick several') : '';
+    const ph = escH(f.opts ? L('Khác…','Other…') : (f.ph || L('Gõ vào đây…','Type here…')));
+    const inp = f.kind === 'doan'
+      ? `<textarea id="v-${escH(f.v)}" data-v="${escH(f.v)}" rows="2" placeholder="${ph}">${escH(s.t)}</textarea>`
+      : `<input id="v-${escH(f.v)}" data-v="${escH(f.v)}" value="${escH(s.t)}" placeholder="${ph}">`;
+    html += `<div class="fld"><label for="v-${escH(f.v)}">${escH(f.label)}<small>${hint}</small></label>${cks}${inp}</div>`;
+  }
+  box.innerHTML = html;
 }
 function renderRules(){
   $('#rules').innerHTML = RULES.map(r =>
-    `<button type="button" class="ck" data-r="${r.id}" aria-pressed="${!!rulesOn[r.id]}" title="${escH(r.full)}"><i></i>${escH(r.label)}</button>`).join('');
+    `<button type="button" class="ck" data-r="${r.id}" aria-pressed="${!!rulesOn[r.id]}" title="${escH(L(r.full, r.fen))}"><i></i>${escH(L(r.label, r.en))}</button>`).join('');
 }
 function compose(){
-  const body = picked.map(f=>{
-    const p = prompts.find(x=>x.file===f); if(!p) return '';
-    let t = p.body.trim();
-    for(const v of varsOf(t)){
+  const body = picked.map(f => {
+    const p = prompts.find(x => x.file === f); if(!p) return '';
+    let t = bodyOf(p);
+    const used = varsOf(t);
+    for(const v of used){
+      if(v === 'bang_tich') continue;
       const val = varText(v);
-      if(val) t = t.replace(new RegExp('\\{\\{\\s*'+v+'\\s*\\}\\}','g'), () => val);
+      if(val) t = t.replace(new RegExp('\\{\\{\\s*' + v + '\\s*\\}\\}', 'g'), () => val);
     }
+    // phần đã tích mà thân prompt không nhắc tới -> liệt kê theo từng bảng
+    const extra = formOf(p).filter(x => !used.includes(x.v) && varText(x.v));
+    let list = '', g = null;
+    for(const x of extra){
+      if(x.g !== g){ g = x.g; if(g) list += (list ? '\n\n' : '') + '## ' + g.replace(/^(Bảng|Table)\s*\d+\s*[:.\-–]\s*/i, '') + '\n'; }
+      list += (list && !list.endsWith('\n') ? '\n' : '') + '- ' + x.label + ': ' + varText(x.v);
+    }
+    if(used.includes('bang_tich')) t = t.replace(/\{\{\s*bang_tich\s*\}\}/g, () => list || L('(chưa chọn gì — hỏi tôi)','(nothing ticked — ask me)'));
+    else if(list) t += L('\n\n# Yêu cầu đã chọn\n\n','\n\n# Selected requirements\n\n') + list;
     return t;
   }).filter(Boolean).join('\n\n---\n\n');
   if(!body) return '';
   const rs = RULES.filter(r => rulesOn[r.id]);
-  return rs.length ? body + '\n\n---\n\n# Quy tắc làm việc\n' + rs.map(r => '- ' + r.full).join('\n') : body;
+  return rs.length ? body + L('\n\n---\n\n# Quy tắc làm việc\n','\n\n---\n\n# Working rules\n') + rs.map(r => '- ' + L(r.full, r.fen)).join('\n') : body;
 }
 function renderPreview(){
   const t = compose();
-  $('#preview').textContent = t || '(trống)';
-  $('#chars').textContent = t ? t.length.toLocaleString('vi') + ' ký tự' : '';
+  $('#preview').textContent = t || L('(trống)','(empty)');
+  $('#chars').textContent = t ? t.length.toLocaleString(LANG) + L(' ký tự',' characters') : '';
 }
 
 /* ---------- sự kiện ---------- */
@@ -545,6 +773,10 @@ $('#list').addEventListener('click', e => {
   const li = e.target.closest('.item'); if(!li) return;
   const f = li.dataset.f;
   if(e.target.closest('.edit')){ openEdit(f); return; }
+  const pp = prompts.find(x => x.file === f);
+  if(e.target.closest('.del')){ deletePrompt(pp); return; }
+  if(pp && pp.chk && pp.chk.err.length && !picked.includes(f))
+    return toast(L('Prompt này đang lỗi nên không dùng được. Bấm ✎ để sửa, hoặc Xoá.','This prompt is broken and cannot be used. Click ✎ to fix it, or Delete.'), 3500);
   if(picked.includes(f)) picked = picked.filter(x=>x!==f); else picked.push(f);
   renderList(); renderPicked();
 });
@@ -570,9 +802,11 @@ $('#picked').addEventListener('dragover', e => {
 });
 $('#vars').addEventListener('click', e => {
   const b = e.target.closest('.ck'); if(!b) return;
-  const s = varState[b.dataset.v], o = b.dataset.o, i = s.p.indexOf(o);
-  if(i < 0) s.p.push(o); else s.p.splice(i,1);
-  b.setAttribute('aria-pressed', i < 0); renderPreview();
+  const v = b.dataset.v, s = varState[v], o = b.dataset.o, i = s.p.indexOf(o);
+  if(b.dataset.k === 'mot') s.p = i < 0 ? [o] : [];
+  else if(i < 0) s.p.push(o); else s.p.splice(i,1);
+  $('#vars').querySelectorAll('.ck').forEach(x => { if(x.dataset.v === v) x.setAttribute('aria-pressed', s.p.includes(x.dataset.o)); });
+  renderPreview();
 });
 $('#vars').addEventListener('input', e => {
   const v = e.target.dataset.v; if(!v) return;
@@ -589,9 +823,9 @@ $('#search').oninput = renderList;
 $('#btnClear').onclick = () => { picked = []; renderList(); renderPicked(); };
 $('#btnReload').onclick = loadAll;
 $('#btnCopy').onclick = async () => {
-  const t = compose(); if(!t) return toast('Chưa có gì để chép.');
-  try{ await navigator.clipboard.writeText(t); toast('Đã copy. Dán vào Claude, nhớ đính kèm file nếu prompt cần.', 3000); }
-  catch{ toast('Trình duyệt chặn clipboard — hãy chép tay từ khung xem trước.'); }
+  const t = compose(); if(!t) return toast(L('Chưa có gì để chép.','Nothing to copy yet.'));
+  try{ await navigator.clipboard.writeText(t); toast(L('Đã copy. Dán vào Claude, nhớ đính kèm file nếu prompt cần.','Copied. Paste it into Claude, and attach files if the prompt needs them.'), 3000); }
+  catch{ toast(L('Trình duyệt chặn clipboard — hãy chép tay từ khung xem trước.','The browser blocked the clipboard — copy by hand from the preview.')); }
 };
 $('#btnDownload').onclick = () => {
   const t = compose(); if(!t) return;
@@ -611,13 +845,13 @@ $('#comboSel').onchange = e => {
   renderList(); renderPicked();
 };
 $('#btnSaveCombo').onclick = async () => {
-  if(!picked.length) return toast('Chọn vài prompt trước đã.');
-  const name = prompt('Tên bộ ghép:'); if(!name) return;
+  if(!picked.length) return toast(L('Chọn vài prompt trước đã.','Pick some prompts first.'));
+  const name = prompt(L('Tên bộ ghép:','Name of the set:')); if(!name) return;
   combos = combos.filter(c=>c.name !== name).concat([{name, files:[...picked]}]);
   try{
     const r = await putFile('combos.json',
       JSON.stringify({combos}, null, 2) + '\n', combosSha, 'chore: cap nhat combos');
-    combosSha = r.content.sha; await loadCombos(); toast('Đã lưu bộ "'+name+'".');
+    combosSha = r.content.sha; await loadCombos(); toast(L('Đã lưu bộ "','Saved set "') + name + '".');
   }catch(e){ toast(e.message); }
 };
 
@@ -632,15 +866,15 @@ function loadCfg(){
     const seg = location.pathname.split('/').filter(Boolean);
     if(seg.length) cfg.repo = seg[0];
   }
-  $('#repoLabel').textContent = cfg.owner ? `${cfg.owner}/${cfg.repo}@${cfg.branch||'main'}` : 'chưa cấu hình';
+  $('#repoLabel').textContent = cfg.owner ? `${cfg.owner}/${cfg.repo}@${cfg.branch||'main'}` : L('chưa cấu hình','not configured');
   showOwner();
 }
 function showOwner(){
   let o = $('#ownerTag');
   if(!o){ o = document.createElement('span'); o.id='ownerTag'; $('.brand').appendChild(o); }
   o.className = 'owner ' + (cfg.token ? 'yes' : 'no');
-  o.textContent = cfg.token ? 'CHỦ KHO' : 'CHỈ XEM';
-  o.title = cfg.token ? 'Trình duyệt này có token: thêm / sửa / xoá được.' : 'Chưa có token: chỉ xem và dùng prompt. Chủ kho vào Cài đặt dán token.';
+  o.textContent = cfg.token ? L('CHỦ KHO','OWNER') : L('CHỈ XEM','VIEW ONLY');
+  o.title = cfg.token ? L('Trình duyệt này có token: thêm / sửa / xoá được.','This browser has a token: you can add / edit / delete.') : L('Chưa có token: chỉ xem và dùng prompt. Chủ kho vào Cài đặt dán token.','No token: view and use prompts only. The owner pastes a token in Settings.');
 }
 $('#btnSettings').onclick = () => {
   sOwner.value=cfg.owner; sRepo.value=cfg.repo; sBranch.value=cfg.branch||'main';
@@ -658,13 +892,13 @@ $('#sSave').onclick = () => {
 $('#sForget').onclick = () => {
   cfg.token=''; sToken.value='';
   try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch{}
-  showOwner(); toast('Đã xoá token khỏi trình duyệt này.');
+  showOwner(); toast(L('Đã xoá token khỏi trình duyệt này.','Token removed from this browser.'));
 };
 
 /* ---------- thêm / sửa / xoá prompt ---------- */
 function openEdit(file){
   editing = file ? prompts.find(p=>p.file===file) : null;
-  $('#eTitle').textContent = editing ? 'Sửa: ' + editing.file : 'Prompt mới';
+  $('#eTitle').textContent = editing ? L('Sửa: ','Edit: ') + editing.file : L('Prompt mới','New prompt');
   eFile.value = editing ? editing.file.replace(/\.md$/,'') : '';
   eFile.disabled = !!editing;
   eTitleIn.value = editing?.meta.title || '';
@@ -674,17 +908,37 @@ function openEdit(file){
   eBody.value = editing?.body.trim() || '';
   eOpts.value = editing ? optsText(editing.meta) : '';
   eDelete.style.display = (editing && cfg.token) ? '' : 'none';
-  eSave.textContent = cfg.token ? 'Lưu vào GitHub' : 'Tải file .md về';
+  eSave.textContent = cfg.token ? L('Lưu vào GitHub','Save to GitHub') : L('Tải file .md về','Download .md file');
   eLock.innerHTML = cfg.token
-    ? '<b>Chế độ chủ kho.</b> Bấm lưu là prompt lên GitHub ngay, khoảng 1 phút sau thành skill cho Claude.'
-    : '<b>Chỉ chủ kho mới lưu thẳng vào kho được.</b> Bạn vẫn soạn được: bấm <b>Tải file .md về</b> rồi gửi file cho chủ kho. Chủ kho thì vào <b>Cài đặt</b> dán token.';
+    ? L('<b>Chế độ chủ kho.</b> Bấm lưu là prompt lên GitHub ngay, khoảng 1 phút sau thành skill cho Claude.','<b>Owner mode.</b> Saving puts the prompt on GitHub right away; about a minute later it becomes a Claude skill.')
+    : L('<b>Chỉ chủ kho mới lưu thẳng vào kho được.</b> Bạn vẫn soạn được: bấm <b>Tải file .md về</b> rồi gửi file cho chủ kho. Chủ kho thì vào <b>Cài đặt</b> dán token.','<b>Only the library owner can save directly.</b> You can still write: click <b>Download .md file</b> and send it to the owner. Owners paste their token in <b>Settings</b>.');
   dlgEdit.showModal();
+  liveCheck();
 }
-$('#btnNew').onclick = () => openEdit(null);
+function liveCheck(){
+  const meta = {title:eTitleIn.value.trim(), description:eDesc.value.trim()};
+  const r = checkPrompt(meta, eBody.value);
+  const box = eCheck; box.hidden = false;
+  if(r.err.length){
+    box.className = 'check bad';
+    box.innerHTML = L('<b>Chưa lưu được — ' + r.err.length + ' lỗi.</b> Sửa ở đây, hoặc dán danh sách này cho chatbot nhờ nó xuất lại file:', '<b>Cannot save — ' + r.err.length + ' error(s).</b> Fix them here, or paste this list to the chatbot and ask it to export the file again:') + '<ul>'
+      + r.err.map(e => '<li>' + escH(e) + '</li>').join('') + r.warn.map(e => '<li class="w">' + escH(e) + '</li>').join('') + '</ul>';
+  }else{
+    box.className = 'check ok';
+    box.innerHTML = L('<b>Đúng khung M5 Prompt Kit.</b>','<b>Matches the M5 Prompt Kit format.</b>') + (r.warn.length ? '<ul>' + r.warn.map(e => '<li class="w">' + escH(e) + '</li>').join('') + '</ul>' : '');
+  }
+  eSave.disabled = r.err.length > 0;
+  return r;
+}
+[eTitleIn, eDesc, eBody].forEach(x => x.addEventListener('input', liveCheck));
+$('#btnNew').onclick = () => dlgGuide.showModal();
+$('#guideHand').onclick = () => { dlgGuide.close(); openEdit(null); };
+$('#guideUp').onclick = () => { dlgGuide.close(); fileIn.value=''; fileIn.click(); };
 $('#eSave').onclick = async () => {
   const slug = eFile.value.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-').replace(/^-|-$/g,'');
-  if(!slug) return toast('Thiếu tên file.');
-  if(!eTitleIn.value.trim() || !eDesc.value.trim()) return toast('Cần có tiêu đề và mô tả.');
+  if(!slug) return toast(L('Thiếu tên file.','File name is missing.'));
+  if(!eTitleIn.value.trim() || !eDesc.value.trim()) return toast(L('Cần có tiêu đề và mô tả.','A title and a description are required.'));
+  if(liveCheck().err.length) return toast(L('File còn lỗi — xem khung đỏ phía trên.','The file still has errors — see the red box above.'));
   const tags = eTags.value.split(',').map(s=>s.trim()).filter(Boolean);
   const text =
     '---\n' +
@@ -698,34 +952,36 @@ $('#eSave').onclick = async () => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([text], {type:'text/markdown'}));
     a.download = slug + '.md'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    dlgEdit.close(); return toast('Đã tải ' + slug + '.md — gửi file này cho chủ kho.', 3500);
+    dlgEdit.close(); return toast(L('Đã tải ','Downloaded ') + slug + L('.md — gửi file này cho chủ kho.','.md — send it to the library owner.'), 3500);
   }
   if(!editing && prompts.some(p => p.file === slug + '.md'))
-    return toast('Đã có prompt tên ' + slug + '.md — đổi tên file khác, hoặc bấm ✎ ở prompt đó để sửa.', 4000);
+    return toast(L('Đã có prompt tên ','A prompt named ') + slug + L('.md — đổi tên file khác, hoặc bấm ✎ ở prompt đó để sửa.','.md already exists — use another file name, or click ✎ on that prompt to edit it.'), 4000);
   try{
     await putFile(`${cfg.dir}/${slug}.md`, text, editing?.sha,
       (editing ? 'docs: cap nhat prompt ' : 'docs: them prompt ') + slug);
-    dlgEdit.close(); toast('Đã lưu lên GitHub.'); loadAll();
+    dlgEdit.close(); toast(L('Đã lưu lên GitHub.','Saved to GitHub.')); loadAll();
   }catch(e){ toast(e.message); }
 };
-$('#eDelete').onclick = async () => {
-  if(!editing || !confirm('Xoá '+editing.file+' khỏi repo?')) return;
+async function deletePrompt(p){
+  if(!p) return;
+  if(!cfg.token) return toast(L('Chỉ chủ kho mới xoá được — vào Cài đặt dán token.','Only the owner can delete — paste a token in Settings.'));
+  if(!confirm(L('Xoá hẳn prompt "','Permanently delete prompt "') + (p.meta.title || p.file) + '" (' + p.file + L(') khỏi kho trên GitHub?\n\nSkill của nó cũng bị gỡ. Muốn lấy lại phải vào lịch sử GitHub.', ') from the GitHub library?\n\nIts skill is removed too. Getting it back requires the GitHub history.'))) return;
   try{
-    await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${editing.path}`, {
+    await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${p.path}`, {
       method:'DELETE',
-      body: JSON.stringify({message:'docs: xoa prompt '+editing.file, sha:editing.sha,
-                            branch:cfg.branch||'main'})});
-    picked = picked.filter(f=>f!==editing.file);
-    dlgEdit.close(); toast('Đã xoá.'); loadAll();
+      body: JSON.stringify({message:'docs: xoa prompt '+p.file, sha:p.sha, branch:cfg.branch||'main'})});
+    picked = picked.filter(f=>f!==p.file);
+    if(dlgEdit.open) dlgEdit.close();
+    toast(L('Đã xoá ','Deleted ') + p.file + '.'); loadAll();
   }catch(e){ toast(e.message); }
-};
+}
+$('#eDelete').onclick = () => deletePrompt(editing);
 
 /* ---------- tạo hướng dẫn ---------- */
-$('#btnGuide').onclick = () => dlgGuide.showModal();
 $('#guideCopy').onclick = async () => {
   try{ await navigator.clipboard.writeText(guideText.value); }
   catch{ guideText.select(); document.execCommand('copy'); }
-  toast('Đã sao chép. Dán vào chat vừa làm việc rồi gửi đi.', 3000);
+  toast(L('Đã sao chép. Dán vào chat vừa làm việc rồi gửi đi.','Copied. Paste it into the chat you just worked in and send.'), 3000);
 };
 
 /* ---------- tải lên file .md ---------- */
@@ -739,8 +995,8 @@ function slugOf(name){
 }
 function fillFromText(text, fileName){
   text = text.replace(/\r\n/g,'\n').replace(/^﻿/,'').trim();
-  const fence = text.match(/^```[a-z]*\n([\s\S]*?)\n```$/);   // AI lỡ bọc trong khối code
-  if(fence) text = fence[1].trim();
+  const fence = text.match(/^(`{3,})[a-z]*\n([\s\S]*?)\n\1$/);   // AI lỡ bọc trong khối code
+  if(fence) text = fence[2].trim();
   const [meta, body] = parseFM(text + '\n');
   if(fileName && !eFile.disabled) eFile.value = slugOf(fileName);
   if(!eFile.value && meta.title) eFile.value = slugOf(meta.title);
@@ -750,18 +1006,20 @@ function fillFromText(text, fileName){
   if(meta.skill !== undefined) eSkill.checked = !!meta.skill;
   eBody.value = (meta.title ? body : text).trim();
   eOpts.value = optsText(meta);
+  liveCheck();
   return !!meta.title;
 }
 function uploadText(text, fileName){
   openEdit(null);
   const ok = fillFromText(text, fileName);
-  $('#eTitle').textContent = 'Tải lên: ' + (fileName || 'nội dung dán');
-  toast(ok ? 'Đã đọc file. Xem lại rồi bấm lưu.' : 'File thiếu phần khai báo đầu file — điền Tiêu đề và Mô tả giúp.', 3500);
+  $('#eTitle').textContent = L('Tải lên: ','Upload: ') + (fileName || L('nội dung dán','pasted text'));
+  const r = liveCheck();
+  toast(r.err.length ? L('File chưa đúng khung — xem các lỗi trong khung đỏ.','The file does not match the format — see the errors in the red box.') : L('File đúng khung. Xem lại rồi bấm lưu.','The file matches the format. Review it, then save.'), 3500);
 }
 function readFile(f){
   if(!f) return;
-  if(!/\.(md|txt)$/i.test(f.name)) return toast('Chỉ nhận file .md hoặc .txt.');
-  if(f.size > 300000) return toast('File quá lớn (trên 300 KB).');
+  if(!/\.(md|txt)$/i.test(f.name)) return toast(L('Chỉ nhận file .md hoặc .txt.','Only .md or .txt files are accepted.'));
+  if(f.size > 300000) return toast(L('File quá lớn (trên 300 KB).','File too large (over 300 KB).'));
   const r = new FileReader();
   r.onload = () => uploadText(r.result, f.name);
   r.readAsText(f, 'utf-8');
@@ -781,7 +1039,7 @@ addEventListener('drop', e => {
 // dán nguyên file (có phần --- đầu file) vào ô nội dung thì tự tách ra các ô
 eBody.addEventListener('paste', e => {
   const t = (e.clipboardData || window.clipboardData).getData('text');
-  if(/^\s*(```[a-z]*\n)?---\s*\n[\s\S]*?\ntitle\s*:/.test(t)){ e.preventDefault(); fillFromText(t, null); toast('Đã tự tách tiêu đề, mô tả, thẻ.'); }
+  if(/^\s*(`{3,}[a-z]*\n)?---\s*\n[\s\S]*?\ntitle\s*:/.test(t)){ e.preventDefault(); fillFromText(t, null); toast(L('Đã tự tách tiêu đề, mô tả, thẻ.','Title, description and tags were filled in.')); }
 });
 
 /* ---------- khởi động ---------- */
@@ -789,8 +1047,15 @@ try{
   const th = localStorage.getItem('promptkit.theme');
   if(th) document.documentElement.setAttribute('data-theme', th);
 }catch{}
+$('#btnLang').onclick = () => {
+  LANG = LANG === 'en' ? 'vi' : 'en';
+  try{ localStorage.setItem('promptkit.lang', LANG); }catch{}
+  applyLang(); showOwner(); loadCfg(); renderRules(); renderList(); renderPicked();
+  if(dlgEdit.open) liveCheck();
+};
 renderRules();
 loadCfg();
+applyLang();
 loadAll();
 if(!cfg.owner) setTimeout(()=>$('#btnSettings').click(), 300);
 </script>

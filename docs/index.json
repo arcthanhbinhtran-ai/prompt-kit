@@ -1,6 +1,31 @@
 {
   "prompts": [
     {
+      "file": "dien-hoa-kien-truc.md",
+      "name": "dien-hoa-kien-truc",
+      "title": "Diễn họa kiến trúc",
+      "description": "Dùng khi cần diễn họa (render) hình gốc kiến trúc theo phong cách, màu, vật liệu, ánh sáng chọn sẵn, giữ đúng hình khối và góc máy; hoặc viết prompt tiếng Anh cho công cụ tạo ảnh.",
+      "tags": [
+        "dien-hoa",
+        "render",
+        "phoi-canh"
+      ],
+      "skill": true,
+      "variables": [
+        "gui_cho",
+        "cong_cu",
+        "loai_hinh",
+        "phong_cach",
+        "mau_sac",
+        "vat_lieu",
+        "anh_sang",
+        "lay_tu_ref",
+        "giu_nguyen",
+        "tranh",
+        "yeu_cau_them"
+      ]
+    },
+    {
       "file": "pdf-bookmark.md",
       "name": "pdf-bookmark",
       "title": "Tạo bookmark cho hồ sơ bản vẽ PDF",
