@@ -1,31 +1,50 @@
 ---
 title: Tên ngắn gọn của prompt
-description: Một câu mô tả khi nào thì dùng prompt này. Câu này cũng là thứ Claude đọc để tự quyết định có dùng hay không.
+description: Một câu nói rõ KHI NÀO thì dùng prompt này. Câu này cũng là thứ Claude đọc để tự quyết định có dùng skill hay không.
 tags: [tu-khoa-1, tu-khoa-2]
 skill: true
-ngay: [Hôm nay, Theo ngày trên khung tên]
 ---
 
-# Tên prompt
+# Vai trò
+Bạn là ...
 
-Viết nội dung prompt ở đây bằng Markdown bình thường.
+# Nhiệm vụ
+... Chỗ nào thay đổi theo từng lần thì viết {{ten_du_an}}.
 
-Muốn có chỗ điền biến thì dùng dấu ngoặc nhọn đôi:
+{{bang_tich}}
 
-- Dự án: {{ten_du_an}}
-- Ngày: {{ngay}}
+# Cách làm
+1. ...
+2. ...
 
-Công cụ web sẽ tự nhận ra `{{ten_du_an}}`, hiện ô nhập, và thay giá trị vào khi ghép prompt.
+# Kiểm tra trước khi giao
+- ...
 
-Muốn chỗ điền hiện thành **ô tích** chọn nhanh thì khai báo các lựa chọn ở phần đầu file, dùng đúng tên biến
-(xem dòng `ngay: [...]` ở trên). Người dùng vẫn gõ thêm được ở ô "Khác…".
+```bang-tich
+# Bảng 1: Thông tin chung
+ten_du_an | Tên dự án | chữ | VD: River Collection
+loai | Loại hồ sơ | một | Kiến trúc, Cảnh quan, Nội thất
 
-## Ghi chú về frontmatter
+# Bảng 2: Giữ nguyên và tránh
+tranh | Tránh | nhiều | Tự đổi số liệu, Bỏ sót trang, Giải thích dài
+```
 
-| Khoá | Bắt buộc | Ý nghĩa |
-|---|---|---|
-| `title` | có | Tên hiển thị trong danh sách |
-| `description` | có | Mô tả ngắn; dùng luôn làm `description` của skill |
-| `tags` | không | Để lọc/tìm kiếm |
-| `skill` | không | `true` thì file này được sinh thành skill cho Claude; `false` hoặc bỏ trống thì chỉ dùng trong web |
-| `<ten_bien>` | không | Danh sách lựa chọn `[A, B, C]` cho chỗ `{{ten_bien}}` — trang hiện thành ô tích, skill ghi kèm để Claude hỏi đúng |
+<!--
+GHI CHÚ (file bắt đầu bằng _ nên trang và skill đều bỏ qua file này)
+
+Phần đầu file (giữa hai dòng ---):
+  title        bắt buộc  Tên hiện trong danh sách
+  description  bắt buộc  Khi nào dùng; dùng luôn làm mô tả của skill
+  tags         không     Để tìm kiếm
+  skill        không     true = sinh thành skill cho Claude
+
+Khối ```bang-tich (trang hiện thành các bảng ô tích):
+  # Bảng 1: Tên bảng                              -> tiêu đề một nhóm ô
+  ten_bien | Nhãn | kiểu | lựa chọn A, B, C       -> một ô
+  kiểu: một (chọn một) / nhiều (chọn nhiều) / chữ (gõ một dòng) / đoạn (gõ nhiều dòng)
+  Bản tiếng Anh: one / many / text / paragraph.
+
+{{bang_tich}}  chỗ trang chèn danh sách người dùng đã tích (không có thì thêm vào cuối).
+{{ten_bien}}   thay đúng giá trị vào chỗ đó. Mọi {{ten_bien}} phải có trong khối bang-tich,
+               nếu không trang báo "mâu thuẫn" và không cho lưu.
+-->
